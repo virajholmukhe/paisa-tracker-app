@@ -39,9 +39,9 @@ export class PersonalExpenseComponent implements OnInit{
 
   ngOnInit(): void {
     // initFlowbite();
-    window.addEventListener('load', function() {
-      const modal = FlowbiteInstances.getInstance('Modal', 'modal-id');
-    })
+    // window.addEventListener('load', function() {
+    //   const modal = FlowbiteInstances.getInstance('Modal', 'modal-id');
+    // })
     this.getExpenseList();
     this.addExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
