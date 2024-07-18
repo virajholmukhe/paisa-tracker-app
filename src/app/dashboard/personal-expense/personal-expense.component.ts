@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { initFlowbite, initModals } from 'flowbite';
 import { Expense } from '../../models/expense';
@@ -33,11 +33,16 @@ export class PersonalExpenseComponent implements OnInit{
   errorMessage: string = '';
   toggleModal: string = '';
 
+  dataRecieved: boolean = false;
+
   constructor(private formBuilder: FormBuilder, private router: Router, private service: PersonalExpenseServiceService, private flowbiteService: FlowbiteService){}
 
   ngOnInit(): void {
+    // initFlowbite();
+    window.addEventListener('load', function() {
+      const modal = FlowbiteInstances.getInstance('Modal', 'modal-id');
+    })
     this.getExpenseList();
-    initFlowbite();
     this.addExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       amount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
@@ -71,17 +76,17 @@ export class PersonalExpenseComponent implements OnInit{
       this.expenseForm.controls['category'].setValue(expense.expenseCategory);
       this.expenseForm.controls['description'].setValue(expense.description);
     }
-    const $modalElement: HTMLElement = document.querySelector('#view') as HTMLElement;
-    const modalOptions: ModalOptions = { 
-      closable: true,
-    };
-    // instance options object
-    const instanceOptions: InstanceOptions = {
-      id: 'view',
-      override: false
-    };
-    const viewModal: ModalInterface = new Modal($modalElement, {}, {});
-    viewModal.toggle();
+    // const $modalElement: HTMLElement = document.querySelector('#view') as HTMLElement;
+    // const modalOptions: ModalOptions = { 
+    //   closable: true,
+    // };
+    // // instance options object
+    // const instanceOptions: InstanceOptions = {
+    //   id: 'view',
+    //   override: false
+    // };
+    // const viewModal: ModalInterface = new Modal($modalElement, {}, {});
+    // viewModal.toggle();
     
   }
 
@@ -102,25 +107,29 @@ export class PersonalExpenseComponent implements OnInit{
         // console.log(expense);
       },
       error: err => this.errorMessage = err,
+      complete: () => this.getExpenseList()
     })
     // window.location.reload();
-    this.getExpenseList();
+    // this.getExpenseList();
     // this.router.navigate(['/dashboard']);
   }
 
   getExpenseList(){
+    console.log("getExpenseList method called");
     this.service.getExpenseList().subscribe({
-      next: expenseList => this.expenseList = expenseList,
-      error: err => this.errorMessage = err
+      next: res => this.expenseList = res,
+      error: err => this.errorMessage = err,
+      complete: () => console.log("Call is completed")
     });
   }
 
   removeExpense(expenseId: number){
     console.log(expenseId);
     this.service.removeExpense(Number(expenseId)).subscribe({
-      error: err => this.errorMessage = err
+      next: res => console.log(res),
+      error: err => this.errorMessage = err,
+      complete: () => this.getExpenseList()
     });
-    this.getExpenseList();
     // window.location.reload();
 
   }

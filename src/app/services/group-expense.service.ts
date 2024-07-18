@@ -26,7 +26,7 @@ export class GroupExpenseService {
   }
 
   public removeExpense(expenseGroupId: number):Observable<any>{
-    return this.http.delete(this.API_BASE_URL+'/group-expense/delete-Group/'+expenseGroupId).
+    return this.http.delete(this.API_BASE_URL+'/group-expense/delete-Group/'+expenseGroupId, { responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)

@@ -37,7 +37,7 @@ export class AppComponent implements OnInit{
 
   signOut(){
     this.tokenService.clearToken();
-    window.location.reload();
+    // window.location.reload();
     this.router.navigate(['/signin']);
   }
 }

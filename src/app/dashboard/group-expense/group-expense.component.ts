@@ -51,7 +51,8 @@ export class GroupExpenseComponent implements OnInit{
     groupExpense.groupMembers = this.groupMembersList;
     this.groupExpenseService.createGroupExpense(groupExpense).subscribe({
       next: res => console.log(res),
-      error: err => this.errorMessage = err
+      error: err => this.errorMessage = err,
+      complete: () => this.getGroupExpenseList()
     });
     this.successPopUp = true;
   }
@@ -72,16 +73,19 @@ export class GroupExpenseComponent implements OnInit{
   getGroupExpenseList(){
     this.groupExpenseService.getGroupExpenses().subscribe({
       next: res => this.groupExpensesList = res,
-      error: err => this.errorMessage = err
+      error: err => this.errorMessage = err,
+      complete: () => console.log("getGroupExpenseList() Completed")
     });
   }
 
   deleteGroup(expenseGroupId: number){
     console.log(expenseGroupId);
     this.groupExpenseService.removeExpense(Number(expenseGroupId)).subscribe({
-      error: err => this.errorMessage = err
+      next: res => console.log(res),
+      error: err => this.errorMessage = err,
+      complete: () => this.getGroupExpenseList()
     });
-    window.location.reload();
+    // window.location.reload();
   }
 
 }

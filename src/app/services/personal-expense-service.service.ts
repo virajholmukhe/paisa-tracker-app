@@ -53,7 +53,7 @@ export class PersonalExpenseServiceService {
   }
 
   removeExpense(expenseId: number):Observable<any>{
-    return this.http.delete(this.API_BASE_URL+'/expense/remove-expense/'+expenseId).
+    return this.http.delete(this.API_BASE_URL+'/expense/remove-expense/'+expenseId, { responseType: "text"}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)

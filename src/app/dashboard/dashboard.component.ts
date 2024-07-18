@@ -30,8 +30,9 @@ export class DashboardComponent implements OnInit {
   constructor(private tokenService: TokenService, private router:Router, private flowbiteService: FlowbiteService, private personalExpenseService: PersonalExpenseServiceService) { }
 
   ngOnInit(): void {
-    initFlowbite();
+    // initFlowbite();
     // this.getExpenseList();
+    
     console.log("Loaded");
     if(!this.tokenService.token || JwtUtils.isTokenExpired()){
       this.router.navigate(['/signin']);
