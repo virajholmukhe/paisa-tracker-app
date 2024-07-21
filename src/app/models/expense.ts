@@ -11,4 +11,5 @@ export interface Expense {
   paidBy: string;
   paidTo: Array<string>;
   unsettledAmount: number;
+  expenseCreated: string;
 }

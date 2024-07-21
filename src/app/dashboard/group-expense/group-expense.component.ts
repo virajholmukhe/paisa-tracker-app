@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { initFlowbite } from 'flowbite';
+import { initFlowbite, Modal, ModalInterface } from 'flowbite';
 import { GroupExpense } from '../../models/group-expense';
 import { GroupExpenseService } from '../../services/group-expense.service';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { DetailsComponent } from "./details/details.component";
 
 @Component({
   selector: 'app-group-expense',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
+  imports: [RouterOutlet, RouterLink, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, DetailsComponent],
   templateUrl: './group-expense.component.html',
   styleUrl: './group-expense.component.css'
 })
@@ -20,11 +21,14 @@ export class GroupExpenseComponent implements OnInit{
   groupExpenseForm!: FormGroup;
   errorMessage!: string;
   groupExpensesList!: Array<GroupExpense>;
-  successPopUp: boolean = false;
+  groupExpense: GroupExpense = {} as GroupExpense;
+
+  addGroupExpenseModal!: ModalInterface;
 
   constructor(private formBuilder: FormBuilder, private groupExpenseService: GroupExpenseService){}
 
   ngOnInit(): void {
+    initFlowbite();
     this.getGroupExpenseList();
     this.groupExpenseForm = this.formBuilder.group({
       groupName: ['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
@@ -41,8 +45,16 @@ export class GroupExpenseComponent implements OnInit{
       }),
       totalOutstanding: ['']
     });
+
+    const $modalElement1: HTMLElement = document.querySelector('#addGroupExpenseModal') as HTMLElement;
+    this.addGroupExpenseModal = new Modal($modalElement1, {}, {});
+
     this.groupMembersList = [];
     this.errorMessage = '';
+  }
+
+  loadGroupExpense(groupExpense: GroupExpense){
+    this.groupExpense = groupExpense;
   }
 
   createGroup(){
@@ -52,9 +64,12 @@ export class GroupExpenseComponent implements OnInit{
     this.groupExpenseService.createGroupExpense(groupExpense).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
-      complete: () => this.getGroupExpenseList()
+      complete: () => {
+        this.getGroupExpenseList(),
+        this.groupExpenseForm.reset(),
+        this.groupMembersList = [];
+      }
     });
-    this.successPopUp = true;
   }
 
   addMemberToList(name: string){
@@ -74,7 +89,10 @@ export class GroupExpenseComponent implements OnInit{
     this.groupExpenseService.getGroupExpenses().subscribe({
       next: res => this.groupExpensesList = res,
       error: err => this.errorMessage = err,
-      complete: () => console.log("getGroupExpenseList() Completed")
+      complete: () => {
+        console.log("getGroupExpenseList() Completed"),
+        this.loadGroupExpense(this.groupExpensesList[0]);
+      }
     });
   }
 
@@ -85,7 +103,24 @@ export class GroupExpenseComponent implements OnInit{
       error: err => this.errorMessage = err,
       complete: () => this.getGroupExpenseList()
     });
-    // window.location.reload();
+  }
+
+  hideModal(modalId: string){
+    switch(modalId) { 
+      case "addGroupExpenseModal": { 
+        this.addGroupExpenseModal.hide();
+         break; 
+      } 
+    }
+  }
+
+  showModal(modalId: string){
+    switch(modalId) { 
+      case "addGroupExpenseModal": { 
+        this.addGroupExpenseModal.show();
+        break; 
+      }
+    }
   }
 
 }

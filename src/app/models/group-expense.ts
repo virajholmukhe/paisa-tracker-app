@@ -9,4 +9,5 @@ export interface GroupExpense {
   groupCreated: string;
   groupMembers: Array<string>;
   groupName: string;
+  
 }

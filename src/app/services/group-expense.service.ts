@@ -25,8 +25,24 @@ export class GroupExpenseService {
     return this.http.get<GroupExpense[]>(this.API_BASE_URL+'/group-expense/get-all-groups');
   }
 
+  public getGroupExpense(groupExpenseId: number): Observable<GroupExpense> {
+    return this.http.get<GroupExpense>(this.API_BASE_URL+'/group-expense/get-groupExpense/'+groupExpenseId).
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
   public removeExpense(expenseGroupId: number):Observable<any>{
     return this.http.delete(this.API_BASE_URL+'/group-expense/delete-Group/'+expenseGroupId, { responseType: 'text'}).
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  addExpense(expense: Expense, groupExpenseId:number): Observable<any> {
+    return this.http.post(this.API_BASE_URL+'/group-expense/add-expense/'+groupExpenseId, expense, {responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)

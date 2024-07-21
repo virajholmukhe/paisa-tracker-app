@@ -41,7 +41,7 @@ export class SessionComponent implements OnInit{
       this.router.navigate(['/dashboard'])
     }
 
-    this.showRegister = this.route.snapshot.paramMap.get('showRegister') as string;
+    this.showRegister = this.route.snapshot.data['showRegister'] as string;
 
     this.loginForm = this.formBuilder.group({
       username:['', [Validators.required]],
@@ -54,6 +54,8 @@ export class SessionComponent implements OnInit{
       email:['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+
+    console.log(this.showRegister);
   }
 
   login(){

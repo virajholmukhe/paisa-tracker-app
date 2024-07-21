@@ -35,21 +35,22 @@ export class PersonalExpenseComponent implements OnInit{
 
   dataRecieved: boolean = false;
 
+  addExpenseModal!: ModalInterface;
+  settleupModal!: ModalInterface;
+  viewModal!: ModalInterface;
+
   constructor(private formBuilder: FormBuilder, private router: Router, private service: PersonalExpenseServiceService, private flowbiteService: FlowbiteService){}
 
   ngOnInit(): void {
-    // initFlowbite();
-    // window.addEventListener('load', function() {
-    //   const modal = FlowbiteInstances.getInstance('Modal', 'modal-id');
-    // })
+    initFlowbite();
     this.getExpenseList();
+
     this.addExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       amount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       category: ['', [Validators.required]],
       description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]]
     });
-    
     this.editExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       expenseId:['', [Validators.required, Validators.pattern("^[0-9]+$")]],
@@ -57,7 +58,6 @@ export class PersonalExpenseComponent implements OnInit{
       unsettledAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       settledAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
     });
-    
     this.expenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       amount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
@@ -65,6 +65,13 @@ export class PersonalExpenseComponent implements OnInit{
       category: ['', [Validators.required]],
       description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]],
     });
+
+    const $modalElement1: HTMLElement = document.querySelector('#addExpenseModal') as HTMLElement;
+    this.addExpenseModal = new Modal($modalElement1, {}, {});
+    const $modalElement2: HTMLElement = document.querySelector('#settleupModal') as HTMLElement;
+    this.settleupModal = new Modal($modalElement2, {}, {});
+    const $modalElement3: HTMLElement = document.querySelector('#viewModal') as HTMLElement;
+    this.viewModal = new Modal($modalElement3, {}, {});
     
   }
 
@@ -76,18 +83,44 @@ export class PersonalExpenseComponent implements OnInit{
       this.expenseForm.controls['category'].setValue(expense.expenseCategory);
       this.expenseForm.controls['description'].setValue(expense.description);
     }
-    // const $modalElement: HTMLElement = document.querySelector('#view') as HTMLElement;
-    // const modalOptions: ModalOptions = { 
-    //   closable: true,
-    // };
-    // // instance options object
-    // const instanceOptions: InstanceOptions = {
-    //   id: 'view',
-    //   override: false
-    // };
-    // const viewModal: ModalInterface = new Modal($modalElement, {}, {});
-    // viewModal.toggle();
-    
+    this.viewModal.show();
+  }
+
+  hideModal(modalId: string){
+    // if(modalId === "view"){
+    //   this.viewModal.hide();
+    // }
+    switch(modalId) { 
+      case "addExpenseModal": { 
+        this.addExpenseModal.hide();
+         break; 
+      } 
+      case "settleupModal": { 
+        this.settleupModal.hide();
+        break; 
+      }
+      case "viewModal": { 
+        this.viewModal.hide();
+        break; 
+      } 
+    }
+  }
+
+  showModal(modalId: string){
+    switch(modalId) { 
+      case "addExpenseModal": { 
+        this.addExpenseModal.show();
+        break; 
+      } 
+      case "settleupModal": { 
+        this.settleupModal.show();
+        break; 
+      }
+      case "viewModal": { 
+        this.viewModal.show();
+        break; 
+      } 
+    }
   }
 
   addExpense(){
@@ -107,15 +140,15 @@ export class PersonalExpenseComponent implements OnInit{
         // console.log(expense);
       },
       error: err => this.errorMessage = err,
-      complete: () => this.getExpenseList()
+      complete: () => {
+        this.getExpenseList(),
+        this.addExpenseForm.reset();
+      },
     })
-    // window.location.reload();
-    // this.getExpenseList();
-    // this.router.navigate(['/dashboard']);
   }
 
   getExpenseList(){
-    console.log("getExpenseList method called");
+    console.log("getExpenseList() method called");
     this.service.getExpenseList().subscribe({
       next: res => this.expenseList = res,
       error: err => this.errorMessage = err,
@@ -130,34 +163,31 @@ export class PersonalExpenseComponent implements OnInit{
       error: err => this.errorMessage = err,
       complete: () => this.getExpenseList()
     });
-    // window.location.reload();
-
   }
 
-  settleUpExpense(expense: Expense, isEditCompleted: boolean){
-    console.log(expense);
+  settleUpExpense(expense: Expense){
+    // console.log(expense);
     if(expense.paidTo?.length){
       this.editExpenseForm.controls['name'].setValue(expense.paidTo[0]);
       this.editExpenseForm.controls['expenseId'].setValue(expense.expenseId);
       this.editExpenseForm.controls['totalAmount'].setValue(expense.amount);
       this.editExpenseForm.controls['unsettledAmount'].setValue(expense.unsettledAmount);
     }
-    
-    
-    if(isEditCompleted){
-      let settledAmount = this.editExpenseForm.controls['unsettledAmount'].value;
-      console.log(settledAmount);
-      // this.service.editExpense
-    }
+    this.settleupModal.show();
   }
 
   editExpense(){
     let settledAmount:number = this.editExpenseForm.controls['settledAmount'].value;
     let expenseId: number = this.editExpenseForm.controls['expenseId'].value;
     this.service.settleUpExpense(expenseId, settledAmount).subscribe({
-      error: err => this.errorMessage = err
+      next: res => console.log(res),
+      error: err => this.errorMessage = err,
+      complete: () => {
+        this.getExpenseList(),
+        this.editExpenseForm.reset();
+      }
     });
-    window.location.reload();
+    this.settleupModal.hide();
   }
 
 }
