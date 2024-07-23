@@ -1,1 +1,18 @@
-<p>emi-expense works!</p>
+<div *ngIf="false; else createEmiBlock">
+
+</div>
+
+<ng-template #createEmiBlock>
+    <div class="w-full p-4 border text-center bg-white rounded-lg sm:p-8 dark:bg-gray-800">
+        <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">You Didn't added any EMI's till now.</h5>
+        <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Click on below button to start!</p>
+        <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Create Now!
+                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</ng-template>

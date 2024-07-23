@@ -30,6 +30,7 @@ export class GroupExpenseComponent implements OnInit{
   ngOnInit(): void {
     initFlowbite();
     this.getGroupExpenseList();
+    
     this.groupExpenseForm = this.formBuilder.group({
       groupName: ['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       groupMembers: [''],
@@ -52,11 +53,6 @@ export class GroupExpenseComponent implements OnInit{
     this.groupMembersList = [];
     this.errorMessage = '';
   }
-
-  loadGroupExpense(groupExpense: GroupExpense){
-    this.groupExpense = groupExpense;
-  }
-
   createGroup(){
     var groupExpense = {} as GroupExpense;
     groupExpense.groupName = this.groupExpenseForm.get('groupName')?.value;
@@ -66,11 +62,17 @@ export class GroupExpenseComponent implements OnInit{
       error: err => this.errorMessage = err,
       complete: () => {
         this.getGroupExpenseList(),
-        this.groupExpenseForm.reset(),
-        this.groupMembersList = [];
+        this.groupExpenseForm.reset();
       }
     });
+    this.groupMembersList = [];
+    this.addGroupExpenseModal.hide();
   }
+
+  loadGroupExpense(groupExpense: GroupExpense){
+    this.groupExpense = groupExpense;
+  }
+  
 
   addMemberToList(name: string){
     if(name.length > 0){

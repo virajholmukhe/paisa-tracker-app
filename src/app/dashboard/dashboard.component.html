@@ -1,36 +1,36 @@
-<div class="container mx-auto px-20 mt-4">
-    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+<div class="container mx-auto px-20">
+    <div class="mb-1 border-b border-gray-200 dark:border-gray-700">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center" id="dashboardBar" data-tabs-toggle="#dashboardBar-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
           <li class="me-2" role="presentation">
-              <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Account</button>
+              <button class="inline-block p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard-tab-content" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Dashboard</button>
           </li>
           <li class="me-2" role="presentation">
-  
-              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Groups</button>
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="account-tab" data-tabs-target="#account-tab-content" type="button" role="tab" aria-controls="account" aria-selected="false">Account</button>
           </li>
           <li class="me-2" role="presentation">
-              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-styled-tab" data-tabs-target="#styled-settings" type="button" role="tab" aria-controls="settings" aria-selected="false">EMI's</button>
+              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="groups-tab" data-tabs-target="#groups-tab-content" type="button" role="tab" aria-controls="groups" aria-selected="false">Groups</button>
           </li>
-          <li role="presentation">
-              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-styled-tab" data-tabs-target="#styled-contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Dine-In</button>
+          <li class="me-2" role="presentation">
+              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="emi-tab" data-tabs-target="#emi-tab-content" type="button" role="tab" aria-controls="emi" aria-selected="false">EMI's</button>
           </li>
       </ul>
     </div>
-    <div id="default-styled-tab-content">
-      <div class="hidden p-4 rounded-lg" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
+    <div id="dashboardBar-content">
+      <div class="hidden p-3 rounded-lg" id="dashboard-tab-content" role="tabpanel" aria-labelledby="dashboard-tab-content">
         <!-- <app-personal-expense></app-personal-expense> -->
-        <app-group-expense></app-group-expense>
-      </div>
-      <div class="hidden p-4 rounded-lg" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-        
         <!-- <app-group-expense></app-group-expense> -->
+         <p>Dashboard</p>
+      </div>
+      <div class="hidden p-3 rounded-lg" id="account-tab-content" role="tabpanel" aria-labelledby="account-tab-content">
         <app-personal-expense></app-personal-expense>
+        <!-- <app-group-expense></app-group-expense> -->
       </div>
-      <div class="hidden p-4 rounded-lg" id="styled-settings" role="tabpanel" aria-labelledby="settings-tab">
+      <div class="hidden p-4 rounded-lg" id="groups-tab-content" role="tabpanel" aria-labelledby="groups-tab-content">
+        <app-group-expense></app-group-expense>
+        <!-- <app-personal-expense></app-personal-expense> -->
+      </div>
+      <div class="hidden p-4 rounded-lg" id="emi-tab-content" role="tabpanel" aria-labelledby="emi-tab-content">
         <app-emi-expense></app-emi-expense>
-      </div>
-      <div class="hidden p-4 rounded-lg" id="styled-contacts" role="tabpanel" aria-labelledby="contacts-tab">
-        <app-hotel-expense></app-hotel-expense>
       </div>
     </div>
   </div>

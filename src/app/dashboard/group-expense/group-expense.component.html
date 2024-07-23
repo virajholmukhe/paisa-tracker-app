@@ -1,5 +1,4 @@
-
-<div class="grid grid-cols-4 grid-rows-1 gap-0 mt-5">
+<div *ngIf="groupExpensesList.length > 0; else createGroupBlock" class="grid grid-cols-4 grid-rows-1 gap-0 mt-5">
     <div class="col-span-1">
         <div class="w-full max-w-md p-3 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div class="flow-root">
@@ -37,15 +36,27 @@
     </div>
     <div  class="col-span-3 px-2 py-2 pt-0">
         <div class="w-full p-3 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <div *ngIf="groupExpensesList.length > 0; else createGroupBlock">
-                    <app-details [groupExpense] = "groupExpense"></app-details>
+            <div>
+                <app-details [groupExpense] = "groupExpense"></app-details>
             </div>
-            <ng-template #createGroupBlock>
-                <h5 class=" leading-none text-gray-900 dark:text-white"> You Dont Have any Group created for you. <button type="button" class="cursor-pointer underline" data-modal-target="addGroupExpenseModel" data-modal-toggle="addGroupExpenseModel">Click Here </button> to get started. </h5>
-            </ng-template>
         </div>
     </div>
 </div>
+
+<ng-template #createGroupBlock>
+    <div class="w-full p-4 border text-center bg-white rounded-lg sm:p-8 dark:bg-gray-800">
+        <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">You Dont Have any Group Expenses</h5>
+        <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Click on below button to add a new!</p>
+        <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
+            <button (click)="showModal('addGroupExpenseModal')" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Create Now!
+                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</ng-template>
 
 
 <!-- Add Group Expense modal -->
@@ -100,7 +111,7 @@
                     </div>
                 </div>
                 <button (click)="createGroup()" [disabled]="groupExpenseForm.invalid" type="submit" class="w-full text-white items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                    Add Expense
+                    Create
                 </button>
             </form>
         </div>

@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-personal-expense',
-  standalone: true,
+  standalone: true, 
   imports: [RouterOutlet, RouterLink, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './personal-expense.component.html',
   styleUrl: './personal-expense.component.css'
@@ -27,13 +27,10 @@ export class PersonalExpenseComponent implements OnInit{
   editExpenseForm!: FormGroup;
   expenseForm!: FormGroup;
 
-  expenseList!: Expense[];
+  expenseList!: Array<Expense>;
 
   expense!: Expense;
   errorMessage: string = '';
-  toggleModal: string = '';
-
-  dataRecieved: boolean = false;
 
   addExpenseModal!: ModalInterface;
   settleupModal!: ModalInterface;
@@ -73,6 +70,7 @@ export class PersonalExpenseComponent implements OnInit{
     const $modalElement3: HTMLElement = document.querySelector('#viewModal') as HTMLElement;
     this.viewModal = new Modal($modalElement3, {}, {});
     
+    this.errorMessage = '';
   }
 
   viewExpense(expense: Expense){
@@ -87,9 +85,6 @@ export class PersonalExpenseComponent implements OnInit{
   }
 
   hideModal(modalId: string){
-    // if(modalId === "view"){
-    //   this.viewModal.hide();
-    // }
     switch(modalId) { 
       case "addExpenseModal": { 
         this.addExpenseModal.hide();
@@ -107,7 +102,7 @@ export class PersonalExpenseComponent implements OnInit{
   }
 
   showModal(modalId: string){
-    switch(modalId) { 
+    switch(modalId) {
       case "addExpenseModal": { 
         this.addExpenseModal.show();
         break; 

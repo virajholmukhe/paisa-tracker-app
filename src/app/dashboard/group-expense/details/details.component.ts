@@ -21,10 +21,12 @@ export class DetailsComponent implements OnInit{
   @Input()
   groupExpense!: GroupExpense;
   addExpenseForm!: FormGroup;
+  groupExpenseForm!: FormGroup;
   errorMessage: string = '';
+  groupMembersList!: Array<string>;
 
-  addExpenseModal!: ModalInterface;
-  // settleupModal!: ModalInterface;
+  createExpenseModal!: ModalInterface;
+  editGroupExpenseModal!: ModalInterface;
   // viewModal!: ModalInterface;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private groupExpenseService: GroupExpenseService){ }
@@ -40,10 +42,26 @@ export class DetailsComponent implements OnInit{
       members: this.formBuilder.array([], [Validators.required])
     });
 
-    const $modalElement1: HTMLElement = document.querySelector('#addExpenseModal') as HTMLElement;
-    this.addExpenseModal = new Modal($modalElement1, {}, {});
-    // const $modalElement2: HTMLElement = document.querySelector('#settleupModal') as HTMLElement;
-    // this.settleupModal = new Modal($modalElement2, {}, {});
+    this.groupExpenseForm = this.formBuilder.group({
+      groupName: ['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
+      groupMembers: [''],
+      expense: this.formBuilder.group({
+        expenseId: [''],
+        expenseOwner:['', [Validators.pattern("^[a-zA-Z\\s]*$")]],
+        paidBy:['', [Validators.pattern("^[a-zA-Z\\s]*$")]],
+        amount: ['', [Validators.pattern("^[0-9]+$")]],
+        unsettledAmount: ['', [Validators.pattern("^[0-9]+$")]],
+        expenseCategory: ['', []],
+        description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]],
+        paidTo: ['']
+      }),
+      totalOutstanding: ['']
+    });
+
+    const $modalElement1: HTMLElement = document.querySelector('#createExpenseModal') as HTMLElement;
+    this.createExpenseModal = new Modal($modalElement1, {}, {});
+    const $modalElement2: HTMLElement = document.querySelector('#editGroupExpenseModal') as HTMLElement;
+    this.editGroupExpenseModal = new Modal($modalElement2, {}, {});
     // const $modalElement3: HTMLElement = document.querySelector('#viewModal') as HTMLElement;
     // this.viewModal = new Modal($modalElement3, {}, {});
   }
@@ -68,7 +86,7 @@ export class DetailsComponent implements OnInit{
         this.addExpenseForm.reset();
       }
     });
-    this.addExpenseModal.hide();
+    this.createExpenseModal.hide();
   }
 
   getGroupExpense(){
@@ -76,7 +94,7 @@ export class DetailsComponent implements OnInit{
       next: res => this.groupExpense = res,
       error: err => this.errorMessage = err,
       complete: () => console.log("groupExpense updated")
-    })
+    });
   }
 
   onChangeCheckBox(event: any){
@@ -94,7 +112,7 @@ export class DetailsComponent implements OnInit{
         i++;
       })
     }
-    console.log(event.target.value, event.target.checked);
+    // console.log(event.target.value, event.target.checked);
   }
 
 
@@ -103,14 +121,14 @@ export class DetailsComponent implements OnInit{
     //   this.viewModal.hide();
     // }
     switch(modalId) { 
-      case "addExpenseModal": { 
-        this.addExpenseModal.hide();
+      case "createExpenseModal": { 
+        this.createExpenseModal.hide();
          break; 
       } 
-      // case "settleupModal": { 
-      //   this.settleupModal.hide();
-      //   break; 
-      // }
+      case "editGroupExpenseModal": { 
+        this.editGroupExpenseModal.hide();
+        break; 
+      }
       // case "viewModal": { 
       //   this.viewModal.hide();
       //   break; 
@@ -120,19 +138,36 @@ export class DetailsComponent implements OnInit{
 
   showModal(modalId: string){
     switch(modalId) { 
-      case "addExpenseModal": { 
-        this.addExpenseModal.show();
+      case "createExpenseModal": { 
+        this.createExpenseModal.show();
         break; 
       } 
-      // case "settleupModal": { 
-      //   this.settleupModal.show();
-      //   break; 
-      // }
+      case "editGroupExpenseModal": { 
+        this.editGroupExpenseModal.show();
+        break; 
+      }
       // case "viewModal": { 
       //   this.viewModal.show();
       //   break; 
       // } 
     }
+  }
+
+  addMemberToList(name: string){
+    if(name.length > 0){
+      this.groupMembersList.push(name);
+    }
+  }
+
+  removeMemberFromList(name: string){
+    const index: number = this.groupMembersList.indexOf(name);
+    if(index !== -1) {
+        this.groupMembersList.splice(index, 1);
+    }
+  }
+
+  savegroupExpense(){
+    
   }
 
 
