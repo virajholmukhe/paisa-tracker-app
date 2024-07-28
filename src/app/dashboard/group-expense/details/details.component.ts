@@ -76,7 +76,7 @@ export class DetailsComponent implements OnInit{
     expense.expenseOwner = JwtUtils.getUsername() as string;
     expense.paidBy = JwtUtils.getUsername() as string;
     
-    this.groupExpenseService.addExpense(expense, this.groupExpense.expenseGroupId).subscribe({
+    this.groupExpenseService.addExpense(expense, this.groupExpense.groupId).subscribe({
       next: res => {
         console.log(res);
       },
@@ -90,7 +90,7 @@ export class DetailsComponent implements OnInit{
   }
 
   getGroupExpense(){
-    this.groupExpenseService.getGroupExpense(this.groupExpense.expenseGroupId).subscribe({
+    this.groupExpenseService.getGroupExpense(this.groupExpense.groupId).subscribe({
       next: res => this.groupExpense = res,
       error: err => this.errorMessage = err,
       complete: () => console.log("groupExpense updated")

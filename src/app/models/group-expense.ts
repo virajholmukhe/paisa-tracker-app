@@ -3,7 +3,7 @@
 import { Expense } from './expense';
 export interface GroupExpense {
   expenseDTO: Array<Expense>;
-  expenseGroupId: number;
+  groupId: number;
   expenseId: Array<number>;
   groupAdmin: string;
   groupCreated: string;

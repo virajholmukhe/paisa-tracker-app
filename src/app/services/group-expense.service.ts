@@ -22,7 +22,11 @@ export class GroupExpenseService {
   }
 
   public getGroupExpenses(): Observable<any> {
-    return this.http.get<GroupExpense[]>(this.API_BASE_URL+'/group-expense/get-all-groups');
+    return this.http.get<GroupExpense[]>(this.API_BASE_URL+'/group-expense/get-all-groups').
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
   }
 
   public getGroupExpense(groupExpenseId: number): Observable<GroupExpense> {

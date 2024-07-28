@@ -20,7 +20,7 @@ export class GroupExpenseComponent implements OnInit{
   groupMembersList!: Array<string>;
   groupExpenseForm!: FormGroup;
   errorMessage!: string;
-  groupExpensesList!: Array<GroupExpense>;
+  groupExpensesList: Array<GroupExpense> = new Array<GroupExpense>;
   groupExpense: GroupExpense = {} as GroupExpense;
 
   addGroupExpenseModal!: ModalInterface;

@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { initFlowbite, initModals } from 'flowbite';
 import { Expense } from '../../models/expense';
@@ -27,7 +27,11 @@ export class PersonalExpenseComponent implements OnInit{
   editExpenseForm!: FormGroup;
   expenseForm!: FormGroup;
 
+  @Input()
   expenseList!: Array<Expense>;
+
+  @Output() 
+  expenseListChange = new EventEmitter<Array<Expense>>();
 
   expense!: Expense;
   errorMessage: string = '';
@@ -40,7 +44,7 @@ export class PersonalExpenseComponent implements OnInit{
 
   ngOnInit(): void {
     initFlowbite();
-    this.getExpenseList();
+    // this.getExpenseList();
 
     this.addExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
@@ -128,11 +132,10 @@ export class PersonalExpenseComponent implements OnInit{
     expense.description = this.addExpenseForm.get('description')?.value;
     expense.expenseOwner = JwtUtils.getUsername() as string;
     expense.paidBy = JwtUtils.getUsername() as string;
-    // console.log(expense);
+
     this.service.addExpense(expense).subscribe({
       next: expense => {
         this.expense = expense;
-        // console.log(expense);
       },
       error: err => this.errorMessage = err,
       complete: () => {
@@ -147,7 +150,10 @@ export class PersonalExpenseComponent implements OnInit{
     this.service.getExpenseList().subscribe({
       next: res => this.expenseList = res,
       error: err => this.errorMessage = err,
-      complete: () => console.log("Call is completed")
+      complete: () => {
+        console.log("Call is completed"),
+        this.expenseListChange.emit(this.expenseList);
+      }
     });
   }
 
@@ -156,7 +162,9 @@ export class PersonalExpenseComponent implements OnInit{
     this.service.removeExpense(Number(expenseId)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
-      complete: () => this.getExpenseList()
+      complete: () => {
+        this.getExpenseList()
+      }
     });
   }
 
