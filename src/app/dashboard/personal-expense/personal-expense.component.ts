@@ -33,7 +33,7 @@ export class PersonalExpenseComponent implements OnInit{
   @Output() 
   expenseListChange = new EventEmitter<Array<Expense>>();
 
-  expense!: Expense;
+  expense: Expense = {} as Expense;
   errorMessage: string = '';
 
   addExpenseModal!: ModalInterface;
@@ -58,6 +58,7 @@ export class PersonalExpenseComponent implements OnInit{
       totalAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       unsettledAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       settledAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
+      unsettledAmountChange: ['']
     });
     this.expenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
@@ -78,14 +79,19 @@ export class PersonalExpenseComponent implements OnInit{
   }
 
   viewExpense(expense: Expense){
-    if(expense.paidTo?.length){
-      this.expenseForm.controls['name'].setValue(expense.paidTo[0]);
-      this.expenseForm.controls['amount'].setValue(expense.amount);
-      this.expenseForm.controls['unsettledAmount'].setValue(expense.unsettledAmount);
-      this.expenseForm.controls['category'].setValue(expense.expenseCategory);
-      this.expenseForm.controls['description'].setValue(expense.description);
+    this.expense = expense;
+    if(expense.expenseCategory.match('Borrow|Lend')){
+      
     }
+    // if(expense.paidTo?.length){
+    //   this.expenseForm.controls['name'].setValue(expense.paidTo[0]);
+    //   this.expenseForm.controls['amount'].setValue(expense.amount);
+    //   this.expenseForm.controls['unsettledAmount'].setValue(expense.unsettledAmount);
+    //   this.expenseForm.controls['category'].setValue(expense.expenseCategory);
+    //   this.expenseForm.controls['description'].setValue(expense.description);
+    // }
     this.viewModal.show();
+
   }
 
   hideModal(modalId: string){
@@ -131,7 +137,13 @@ export class PersonalExpenseComponent implements OnInit{
     expense.expenseCategory = this.addExpenseForm.get('category')?.value;
     expense.description = this.addExpenseForm.get('description')?.value;
     expense.expenseOwner = JwtUtils.getUsername() as string;
-    expense.paidBy = JwtUtils.getUsername() as string;
+    if(expense.expenseCategory == 'Borrow'){
+      expense.paidBy = expense.paidTo[0];
+      expense.paidTo = [JwtUtils.getUsername() as string];
+    }else {
+      expense.paidBy = JwtUtils.getUsername() as string;
+    }
+    
 
     this.service.addExpense(expense).subscribe({
       next: expense => {

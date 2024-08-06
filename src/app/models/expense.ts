@@ -10,6 +10,7 @@ export interface Expense {
   isSettled: boolean;
   paidBy: string;
   paidTo: Array<string>;
+  unsettledAmountChange: Array<number>;
   unsettledAmount: number;
   expenseCreated: string;
 }

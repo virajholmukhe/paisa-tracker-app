@@ -1,0 +1,193 @@
+<div class="p-3 rounded-lg" id="dashboard-tab-content" role="tabpanel" aria-labelledby="dashboard-tab-content">
+    <div class="grid grid-cols-12 gap-3">
+        <div class="col-span-3 row-span-2 ">
+            <div class="overflow-auto">
+             <!-- Activity Logs -->
+                <div class="text-base list-none bg-white divide-y divide-gray-100 rounded border dark:divide-gray-600 dark:bg-gray-700 h-full" id="notification-dropdown">
+                    <div class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    Activity Logs
+                    </div>
+                    <div *ngIf="expenseList.length > 0 ; else noActivitiesBlock">
+                    <a *ngFor="let expense of expenseList" class="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
+                        <div class="flex-shrink-0">
+                            <img class="rounded-full w-11 h-11" src="../../assets/images/user.png" alt="Jese image">
+                        </div>
+                        <div *ngIf="expense.expenseCategory === 'Borrow' ; else elseIf1"  class="w-full pl-3">
+                            <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                                You Borrowed 
+                                <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span> 
+                                from 
+                                <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span> 
+                            </div>
+                            <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
+                        </div>
+                        <ng-template #elseIf1 class="w-full pl-3">
+                            <ng-container *ngIf="expense.expenseCategory === 'Lend' ; else elseIf2">
+                                <div class="w-full pl-3">
+                                <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                                    You Lended 
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span> 
+                                    from 
+                                    <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span> 
+                                </div>
+                                <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+                        <ng-template #elseIf2>
+                            <div class="w-full pl-3">
+                                <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                                You Paid 
+                                <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span>
+                                to 
+                                <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span>
+                                for
+                                <span class="font-medium text-gray-900 dark:text-white">{{expense.expenseCategory}}</span>
+                                </div>
+                                <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
+                            </div>
+                        </ng-template>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-span-6">
+            <div class="">
+                <!-- Main widget -->
+                <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex-shrink-0">
+                            <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white">12000 &#8377;</span>
+                            <h3 class="text-base font-light text-gray-500 dark:text-gray-400">Sales this week</h3>
+                        </div>
+                        <div class="flex items-center justify-end flex-1 text-base font-medium text-green-500 dark:text-green-400"> 12.5%
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="main-chart"></div>
+                    <!-- Card Footer -->
+                    <div class="flex items-center justify-between pt-3 mt-4 border-t border-gray-200 sm:pt-6 dark:border-gray-700">
+                        <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" type="button" data-dropdown-toggle="weekly-sales-dropdown">Last 7 days <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        <!-- Dropdown menu -->
+                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="weekly-sales-dropdown">
+                            <ul class="py-1" role="none">
+                                <li>
+                                    <a (click)="getDaysList(7)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Last 7 days</a>
+                                </li>
+                                <li>
+                                    <a (click)="getDaysList(30)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Last 30 days</a>
+                                </li>
+                                <li>
+                                    <a (click)="getDaysList(90)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Last 90 days</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <a href="#" class="inline-flex items-center p-2 text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
+                                Sales Report
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="col-span-3">
+            <!-- Categories Chart -->
+            <div class="max-w-sm w-full bg-white rounded-lg border dark:bg-gray-800 p-4 md:p-6">
+                <div class="flex justify-between mb-3">
+                    <div class="flex justify-center items-center">
+                    <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white pe-1">Expenses in Categories</h5>
+                    </div>
+                </div>
+                <!-- Donut Chart -->
+                <div class="py-6" id="donut-chart"></div>
+            </div>
+            <div class="mt-3 ">
+                <!--Tabs widget -->
+                <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                    <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900 dark:text-white">Top Expenses</h3>
+                    <div class="sm:hidden">
+                    <label for="tabs" class="sr-only">Select tab</label>
+                    <select id="tabs" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option>Statistics</option>
+                        <option>Services</option>
+                        <option>FAQ</option>
+                    </select>
+                    </div>
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+                    <li class="w-full">
+                        <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top products</button>
+                    </li>
+                    <li class="w-full">
+                        <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top Customers</button>
+                    </li>
+                    </ul>
+                    <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
+                    <div class="hidden pt-4" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center justify-between">
+                                <div class="flex items-center min-w-0">
+                                <img class="flex-shrink-0 w-10 h-10" src="../../assets/images/user.png" alt="imac image">
+                                <div class="ml-3">
+                                    <p class="font-medium text-gray-900 truncate dark:text-white">
+                                        Apple iMac 24"
+                                    </p>
+                                    <div class="flex items-center justify-end flex-1 text-sm text-red-600 dark:text-red-500">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                        </svg>
+                                        2% 
+                                        <span class="ml-2 text-gray-500">vs last month</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $98,543
+                                </div>
+                                </div>
+                            </li>               
+                        </ul>
+                    </div>
+                    <div class="hidden pt-4" id="about" role="tabpanel" aria-labelledby="about-tab">
+                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="../../assets/images/user.png" alt="Neil image">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                <p class="font-medium text-gray-900 truncate dark:text-white">
+                                    Lana Byrd
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    emaillowbite.com
+                                </p>
+                                </div>
+                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $1044
+                                </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+</div>
+
+ <ng-template #noActivitiesBlock>
+    <a class="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
+       <div class="w-full text-center pl-3">
+          <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+             No Activities till now
+          </div>
+       </div>
+    </a>
+ </ng-template>
