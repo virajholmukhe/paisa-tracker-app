@@ -1,18 +1,15 @@
-import { AfterViewChecked, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { initFlowbite, initModals } from 'flowbite';
+import { initFlowbite } from 'flowbite';
 import { Expense } from '../../models/expense';
-import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { PersonalExpenseServiceService } from '../../services/personal-expense-service.service';
 import { JwtUtils } from '../../utils/jwtUtils';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FlowbiteService } from '../../services/flowbite.service';
 
 import { Modal } from 'flowbite';
-import type { ModalOptions, ModalInterface } from 'flowbite';
-import type { InstanceOptions } from 'flowbite';
-import { Observable } from 'rxjs';
+import type { ModalInterface } from 'flowbite';
 
 @Component({
   selector: 'app-personal-expense',
@@ -27,31 +24,31 @@ export class PersonalExpenseComponent implements OnInit{
   editExpenseForm!: FormGroup;
   expenseForm!: FormGroup;
 
-  @Input()
-  expenseList!: Array<Expense>;
-
-  @Output() 
-  expenseListChange = new EventEmitter<Array<Expense>>();
-
+  expenseList: Array<Expense> = {} as Array<Expense>;
   expense: Expense = {} as Expense;
+  expenseId: number = 0;
   errorMessage: string = '';
 
   addExpenseModal!: ModalInterface;
   settleupModal!: ModalInterface;
   viewModal!: ModalInterface;
+  deleteModal!: ModalInterface;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private service: PersonalExpenseServiceService, private flowbiteService: FlowbiteService){}
+  constructor(
+    private formBuilder: FormBuilder,
+    private service: PersonalExpenseServiceService,
+  ){}
 
   ngOnInit(): void {
     initFlowbite();
-    // this.getExpenseList();
-
+    this.getExpenseList();
     this.addExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       amount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       category: ['', [Validators.required]],
       description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]]
     });
+
     this.editExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       expenseId:['', [Validators.required, Validators.pattern("^[0-9]+$")]],
@@ -60,13 +57,6 @@ export class PersonalExpenseComponent implements OnInit{
       settledAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       unsettledAmountChange: ['']
     });
-    this.expenseForm = this.formBuilder.group({
-      name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
-      amount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
-      unsettledAmount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
-      category: ['', [Validators.required]],
-      description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]],
-    });
 
     const $modalElement1: HTMLElement = document.querySelector('#addExpenseModal') as HTMLElement;
     this.addExpenseModal = new Modal($modalElement1, {}, {});
@@ -74,60 +64,11 @@ export class PersonalExpenseComponent implements OnInit{
     this.settleupModal = new Modal($modalElement2, {}, {});
     const $modalElement3: HTMLElement = document.querySelector('#viewModal') as HTMLElement;
     this.viewModal = new Modal($modalElement3, {}, {});
+    const $modalElement4: HTMLElement = document.querySelector('#deleteModal') as HTMLElement;
+    this.deleteModal = new Modal($modalElement4, {}, {});
     
-    this.errorMessage = '';
   }
-
-  viewExpense(expense: Expense){
-    this.expense = expense;
-    if(expense.expenseCategory.match('Borrow|Lend')){
-      
-    }
-    // if(expense.paidTo?.length){
-    //   this.expenseForm.controls['name'].setValue(expense.paidTo[0]);
-    //   this.expenseForm.controls['amount'].setValue(expense.amount);
-    //   this.expenseForm.controls['unsettledAmount'].setValue(expense.unsettledAmount);
-    //   this.expenseForm.controls['category'].setValue(expense.expenseCategory);
-    //   this.expenseForm.controls['description'].setValue(expense.description);
-    // }
-    this.viewModal.show();
-
-  }
-
-  hideModal(modalId: string){
-    switch(modalId) { 
-      case "addExpenseModal": { 
-        this.addExpenseModal.hide();
-         break; 
-      } 
-      case "settleupModal": { 
-        this.settleupModal.hide();
-        break; 
-      }
-      case "viewModal": { 
-        this.viewModal.hide();
-        break; 
-      } 
-    }
-  }
-
-  showModal(modalId: string){
-    switch(modalId) {
-      case "addExpenseModal": { 
-        this.addExpenseModal.show();
-        break; 
-      } 
-      case "settleupModal": { 
-        this.settleupModal.show();
-        break; 
-      }
-      case "viewModal": { 
-        this.viewModal.show();
-        break; 
-      } 
-    }
-  }
-
+  
   addExpense(){
     var expense = {} as Expense;
     expense.paidTo = [];
@@ -143,8 +84,6 @@ export class PersonalExpenseComponent implements OnInit{
     }else {
       expense.paidBy = JwtUtils.getUsername() as string;
     }
-    
-
     this.service.addExpense(expense).subscribe({
       next: expense => {
         this.expense = expense;
@@ -152,36 +91,47 @@ export class PersonalExpenseComponent implements OnInit{
       error: err => this.errorMessage = err,
       complete: () => {
         this.getExpenseList(),
+        this.addExpenseModal.hide(),
         this.addExpenseForm.reset();
       },
     })
   }
 
+  viewExpense(expense: Expense){
+    this.expense = expense;
+    this.viewModal.show();
+  }
+  
+  
   getExpenseList(){
     console.log("getExpenseList() method called");
     this.service.getExpenseList().subscribe({
       next: res => this.expenseList = res,
       error: err => this.errorMessage = err,
       complete: () => {
-        console.log("Call is completed"),
-        this.expenseListChange.emit(this.expenseList);
+        console.log("Call is completed");
       }
     });
   }
-
+  
   removeExpense(expenseId: number){
-    console.log(expenseId);
-    this.service.removeExpense(Number(expenseId)).subscribe({
+    this.expenseId = expenseId;
+    this.deleteModal.show();
+  }
+
+  deleteExpense(){
+    console.log(this.expenseId);
+    this.service.removeExpense(Number(this.expenseId)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {
         this.getExpenseList()
       }
     });
+    this.deleteModal.hide();
   }
-
+  
   settleUpExpense(expense: Expense){
-    // console.log(expense);
     if(expense.paidTo?.length){
       this.editExpenseForm.controls['name'].setValue(expense.paidTo[0]);
       this.editExpenseForm.controls['expenseId'].setValue(expense.expenseId);
@@ -190,7 +140,7 @@ export class PersonalExpenseComponent implements OnInit{
     }
     this.settleupModal.show();
   }
-
+  
   editExpense(){
     let settledAmount:number = this.editExpenseForm.controls['settledAmount'].value;
     let expenseId: number = this.editExpenseForm.controls['expenseId'].value;
@@ -204,5 +154,42 @@ export class PersonalExpenseComponent implements OnInit{
     });
     this.settleupModal.hide();
   }
-
+  
+  hideModal(modalId: string){
+    switch(modalId) { 
+      case "addExpenseModal": { 
+        this.addExpenseModal.hide();
+         break; 
+      } 
+      case "settleupModal": { 
+        this.settleupModal.hide();
+        break; 
+      }
+      case "viewModal": { 
+        this.viewModal.hide();
+        break; 
+      }
+      case "deleteModal": { 
+        this.deleteModal.hide();
+        break; 
+      }
+    }
+  }
+  
+  showModal(modalId: string){
+    switch(modalId) {
+      case "addExpenseModal": { 
+        this.addExpenseModal.show();
+        break; 
+      } 
+      case "settleupModal": { 
+        this.settleupModal.show();
+        break; 
+      }
+      case "deleteModal": { 
+        this.deleteModal.show();
+        break; 
+      }
+    }
+  }
 }

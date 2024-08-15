@@ -22,8 +22,10 @@ export class GroupExpenseComponent implements OnInit{
   errorMessage!: string;
   groupExpensesList: Array<GroupExpense> = new Array<GroupExpense>;
   groupExpense: GroupExpense = {} as GroupExpense;
+  expenseGroupId: number = 0;
 
   addGroupExpenseModal!: ModalInterface;
+  deleteGroupModal!: ModalInterface;
 
   constructor(private formBuilder: FormBuilder, private groupExpenseService: GroupExpenseService){}
 
@@ -50,6 +52,9 @@ export class GroupExpenseComponent implements OnInit{
     const $modalElement1: HTMLElement = document.querySelector('#addGroupExpenseModal') as HTMLElement;
     this.addGroupExpenseModal = new Modal($modalElement1, {}, {});
 
+    const $modalElement2: HTMLElement = document.querySelector('#deleteGroupModal') as HTMLElement;
+    this.deleteGroupModal = new Modal($modalElement2, {}, {});
+
     this.groupMembersList = [];
     this.errorMessage = '';
   }
@@ -71,6 +76,7 @@ export class GroupExpenseComponent implements OnInit{
 
   loadGroupExpense(groupExpense: GroupExpense){
     this.groupExpense = groupExpense;
+    
   }
   
 
@@ -98,12 +104,19 @@ export class GroupExpenseComponent implements OnInit{
     });
   }
 
-  deleteGroup(expenseGroupId: number){
-    console.log(expenseGroupId);
-    this.groupExpenseService.removeExpense(Number(expenseGroupId)).subscribe({
+  removeGroup(expenseGroupId: number){
+    this.expenseGroupId = expenseGroupId;
+    this.deleteGroupModal.show();
+  }
+ 
+  deleteGroup(){
+    this.groupExpenseService.removeExpense(Number(this.expenseGroupId)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
-      complete: () => this.getGroupExpenseList()
+      complete: () => {
+        this.getGroupExpenseList(),
+        this.deleteGroupModal.hide();
+      }
     });
   }
 
@@ -112,7 +125,11 @@ export class GroupExpenseComponent implements OnInit{
       case "addGroupExpenseModal": { 
         this.addGroupExpenseModal.hide();
          break; 
-      } 
+      }
+      case "deleteGroupModal": { 
+        this.deleteGroupModal.hide();
+         break; 
+      }
     }
   }
 
@@ -120,6 +137,10 @@ export class GroupExpenseComponent implements OnInit{
     switch(modalId) { 
       case "addGroupExpenseModal": { 
         this.addGroupExpenseModal.show();
+        break; 
+      }
+      case "deleteGroupModal": { 
+        this.deleteGroupModal.show();
         break; 
       }
     }

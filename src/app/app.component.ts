@@ -19,25 +19,11 @@ import { FooterComponent } from "./footer/footer.component";
 export class AppComponent implements OnInit{
   
   title = 'paisa-tracker-app';
-  isLoggedIn = false;
-  username!: string;
-  currentURL!: string;
 
-  constructor(private tokenService:TokenService, private router:Router, private activatedRoute: ActivatedRoute, private flowbiteService: FlowbiteService) {
-    
-   }
+  constructor() {}
 
   ngOnInit(): void {
     initFlowbite();
-    if(this.tokenService.token){
-      this.isLoggedIn = true;
-      this.username = JwtUtils.getUsername();
-    }
   }
 
-  signOut(){
-    this.tokenService.clearToken();
-    // window.location.reload();
-    this.router.navigate(['/signin']);
-  }
 }

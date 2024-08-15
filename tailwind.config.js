@@ -12,6 +12,7 @@ module.exports = {
     require('flowbite/plugin')({
       charts: true,
     }),
+    require('tailwind-scrollbar-hide')
   ],
 }
 

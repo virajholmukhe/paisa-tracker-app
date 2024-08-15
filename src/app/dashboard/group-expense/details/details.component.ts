@@ -20,6 +20,7 @@ export class DetailsComponent implements OnInit{
   
   @Input()
   groupExpense!: GroupExpense;
+
   addExpenseForm!: FormGroup;
   groupExpenseForm!: FormGroup;
   errorMessage: string = '';
@@ -57,6 +58,8 @@ export class DetailsComponent implements OnInit{
       }),
       totalOutstanding: ['']
     });
+
+    this.groupMembersList = this.groupExpense.groupMembers;
 
     const $modalElement1: HTMLElement = document.querySelector('#createExpenseModal') as HTMLElement;
     this.createExpenseModal = new Modal($modalElement1, {}, {});
@@ -112,14 +115,10 @@ export class DetailsComponent implements OnInit{
         i++;
       })
     }
-    // console.log(event.target.value, event.target.checked);
   }
 
 
   hideModal(modalId: string){
-    // if(modalId === "view"){
-    //   this.viewModal.hide();
-    // }
     switch(modalId) { 
       case "createExpenseModal": { 
         this.createExpenseModal.hide();
@@ -129,10 +128,6 @@ export class DetailsComponent implements OnInit{
         this.editGroupExpenseModal.hide();
         break; 
       }
-      // case "viewModal": { 
-      //   this.viewModal.hide();
-      //   break; 
-      // } 
     }
   }
 
@@ -146,14 +141,11 @@ export class DetailsComponent implements OnInit{
         this.editGroupExpenseModal.show();
         break; 
       }
-      // case "viewModal": { 
-      //   this.viewModal.show();
-      //   break; 
-      // } 
     }
   }
 
   addMemberToList(name: string){
+
     if(name.length > 0){
       this.groupMembersList.push(name);
     }
@@ -166,7 +158,7 @@ export class DetailsComponent implements OnInit{
     }
   }
 
-  savegroupExpense(){
+  updateGroupExpense(){
     
   }
 

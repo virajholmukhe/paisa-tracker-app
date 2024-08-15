@@ -1,63 +1,3 @@
-<!-- <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-        <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900 dark:text-white">Statistics this month</h3>
-        <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
-            <li class="w-full">
-                <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top products</button>
-            </li>
-            <li class="w-full">
-                <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top Customers</button>
-            </li>
-        </ul>
-        <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
-            <div class="hidden pt-4" id="faq" role="tabpanel" aria-labelledby="faq-tab">
-                <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <li class="py-3 sm:py-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center min-w-0">
-                                <img class="flex-shrink-0 w-10 h-10" src="../../../assets/images/user.png" alt="imac image">
-                                <div class="ml-3">
-                                    <p class="font-medium text-gray-900 truncate dark:text-white">
-                                    iPhone 14 Pro 
-                                    </p>
-                                    <div class="flex items-center justify-end flex-1 text-sm text-green-500 dark:text-green-400">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
-                                        </svg> 2.5% <span class="ml-2 text-gray-500">vs last month</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">$445,467</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="hidden pt-4" id="about" role="tabpanel" aria-labelledby="about-tab">
-                <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <li class="py-3 sm:py-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center min-w-0">
-                                <img class="flex-shrink-0 w-10 h-10" src="../../../assets/images/user.png" alt="imac image">
-                                <div class="ml-3">
-                                    <p class="font-medium text-gray-900 truncate dark:text-white">
-                                    iPhone 14 Pro 
-                                    </p>
-                                    <div class="flex items-center justify-end flex-1 text-sm text-green-500 dark:text-green-400">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
-                                        </svg> 2.5% <span class="ml-2 text-gray-500">vs last month</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">$447</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <!-- Card header -->
 <div class="items-center justify-between lg:flex">
     <div class="mb-4 lg:mb-0">
@@ -126,8 +66,8 @@
         </div>
         </div>
     </div>
-    </div>
-    <!-- Card Footer -->
+</div>
+<!-- Card Footer -->
 <div class="flex items-center justify-between pt-3 sm:pt-6">
     <div></div>
     <div class="flex-shrink-0">
@@ -158,33 +98,45 @@
             <!-- Modal body -->
             <form [formGroup]="addExpenseForm" class="p-4 md:p-5">
                 <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expense Name</label>
-                        <input formControlName="name" type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Expense Name" required="">
-                        <div *ngIf="addExpenseForm.controls['name'].errors && addExpenseForm.controls['name'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div *ngIf="addExpenseForm.controls['name'].errors?.['required']" class="ms-3 text-sm font-medium">This Field is required.</div>
-                          <div class="ms-3 text-sm font-medium">Only letters are allowed.</div>
+
+                    <!-- Input Field -->
+                    <div class="col-span-2 h-20">
+                        <div class="relative">
+                            <input formControlName="name" type="text" name="name" id="name" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=""/>
+                            <label for="name" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Name</label>
+                        </div>
+                        <div *ngIf="addExpenseForm.controls['name'].errors && addExpenseForm.controls['name'].touched">
+                            <p *ngIf="addExpenseForm.controls['name'].errors?.['required']" id="nameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="addExpenseForm.controls['name'].errors?.['pattern']" id="nameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only letters
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Input Field -->
                     <div class="col-span-2 sm:col-span-1">
-                        <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
-                        <input formControlName="amount" type="text" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="₹_____" required="">
-                        <div *ngIf="addExpenseForm.controls['amount'].errors && addExpenseForm.controls['amount'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div *ngIf="addExpenseForm.controls['amount'].errors?.['required']" class="ms-3 text-sm font-medium">This Field is required.</div>
-                          <div class="ms-3 text-sm font-medium">Only numbers are allowed.</div>
+                        <div class="col-span-2 h-20">
+                        <div class="relative">
+                            <input formControlName="amount" type="text" name="amount" id="amount" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=""/>
+                            <label for="amount" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Amount paid</label>
+                        </div>
+                        <div *ngIf="addExpenseForm.controls['amount'].errors && addExpenseForm.controls['amount'].touched">
+                            <p *ngIf="addExpenseForm.controls['amount'].errors?.['required']" id="amountError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="addExpenseForm.controls['amount'].errors?.['pattern']" id="amountError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only letters
+                            </p>
+                        </div>
                         </div>
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expense Type</label>
-                        <select formControlName="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
+                    <!-- Input Field -->
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                        <select formControlName="category" id="category" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer">
                             <option value="" selected >Select category</option>
                             <option value="Ticket">Tickets</option>
                             <option value="Groceries">Groceries</option>
@@ -195,16 +147,17 @@
                             <option value="Fuel">Fuel</option>
                             <option value="Others">Others</option>
                         </select>
-                        <div *ngIf="addExpenseForm.controls['category'].errors && addExpenseForm.controls['category'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div class="ms-3 text-sm font-medium">Choose category to proceed</div>
+                        <label for="category" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Expense Category</label>
+                        </div>
+                        <div *ngIf="addExpenseForm.controls['category'].errors && addExpenseForm.controls['category'].touched">
+                            <p *ngIf="addExpenseForm.controls['category'].errors?.['required']" id="categoryError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                            <span class="font-medium">Oops!</span> Field is required.
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Input Field -->
                     <div class="col-span-2">
-                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Paid with: </h3>
                         <ul class="text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <li *ngFor="let member of groupExpense.groupMembers; let  i = index" class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
@@ -214,36 +167,31 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-span-2">
-                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expense Description</label>
-                        <textarea formControlName="description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product description here"></textarea>                    
-                        <div *ngIf="addExpenseForm.controls['description'].errors && addExpenseForm.controls['description'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div class="ms-3 text-sm font-medium">Only letters are allowed</div>
+
+                    <!-- Input Field -->
+                    <div class="col-span-2 h-20">
+                        <div class="relative">
+                            <textarea formControlName="description" type="textarea" name="description" id="description" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=""></textarea>
+                            <label for="description" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Expense Description</label>
+                        </div>
+                        <div *ngIf="addExpenseForm.controls['description'].errors && addExpenseForm.controls['description'].touched">
+                            <p *ngIf="addExpenseForm.controls['description'].errors?.['required']" id="descriptionError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="addExpenseForm.controls['description'].errors?.['pattern']" id="descriptionError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only Numbers
+                            </p>
                         </div>
                     </div>
+
                 </div>
-                <button (click)="addExpense()" [disabled]="addExpenseForm.invalid" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Add Expense
-                </button>
-                <div *ngIf="errorMessage" id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-                  <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-                      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
-                      </svg>
-                      <span class="sr-only">Error icon</span>
-                  </div>
-                  <div class="ms-3 text-sm font-normal">{{errorMessage}}</div>
-                  <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
-                      <span class="sr-only">Close</span>
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                      </svg>
-                  </button>
+                <div>
+                    <div class="text-center" *ngIf="addExpenseForm.invalid">
+                      <button type="button" class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Save</button>
+                    </div>
+                    <div class="text-center" *ngIf="addExpenseForm.valid">
+                        <button (click)="addExpense()" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -257,7 +205,7 @@
         <!-- Modal header -->
         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Create new group
+                Edit Details
             </h3>
             <button (click)="hideModal('editGroupExpenseModal')" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -269,38 +217,36 @@
         <!-- Modal body -->
         <form [formGroup]="groupExpenseForm" class="p-4 md:p-5">
             <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="col-span-2">
-                    <label for="groupName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Group Name</label>
-                    <input formControlName="groupName" type="text" name="groupName" id="groupName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Group Name" required="">
-                    <div *ngIf="groupExpenseForm.controls['groupName'].errors && groupExpenseForm.controls['groupName'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                      <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                      </svg>
-                      <span class="sr-only">Info</span>
-                      <div *ngIf="groupExpenseForm.controls['groupName'].errors?.['required']" class="ms-3 text-sm font-medium">This Field is required.</div>
-                      <div class="ms-3 text-sm font-medium">Only letters are allowed.</div>
+                <!-- Input Field -->
+                <div class="col-span-2 h-20">
+                    <div class="relative">
+                        <input formControlName="groupName" value={{groupExpense.groupName}} type="text" name="groupName" id="groupName" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=""/>
+                        <label for="groupName" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Group Name</label>
+                    </div>
+                    <div *ngIf="groupExpenseForm.controls['groupName'].errors && groupExpenseForm.controls['groupName'].touched">
+                        <p *ngIf="groupExpenseForm.controls['groupName'].errors?.['required']" id="groupNameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                            <span class="font-medium">Oops!</span> Field is required.
+                        </p>
+                        <p *ngIf="groupExpenseForm.controls['groupName'].errors?.['pattern']" id="groupNameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                            <span class="font-medium">Oops!</span> Use only letters
+                        </p>
                     </div>
                 </div>
+
                 <div class="col-span-2 sm:col-span-1 ">
-                    <input #memberName type="text" name="memberName" id="memberName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Member Name">
+                    <div class="relative">
+                        <input #memberName  type="text" id="memberName" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=""/>
+                        <label for="memberName" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Add</label>
+                    </div>
                 </div>
                 <div class="col-span-2 sm:col-span-1 w-full">
                     <button (click)="addMemberToList(memberName.value)" (click)="memberName.value=''" type="submit" class="w-full cursor-pointer text-white items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Add Members
                     </button>
                 </div>
+
                 <label for="" class="col-span-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Group Members</label>
-                <div class="col-span-1" *ngFor="let member of groupExpense.groupMembers; let i = index">
-                    <div id="alert-{{i}}" class="flex items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-800" role="alert">
-                        <div class="ms-3 text-sm font-medium text-gray-800 dark:text-gray-300">{{member}}</div>
-                        <button (click)="removeMemberFromList(member)" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-gray-50 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white" aria-label="Close">
-                          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                          </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-span-2" *ngFor="let member of groupMembersList; let i = index">
+                <div class="col-span-1" *ngFor="let member of groupMembersList; let i = index">
                     <div id="alert-{{i}}" class="flex items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800" role="alert">
                         <div class="ms-3 text-sm font-medium text-gray-800 dark:text-gray-300">{{member}}</div>
                         <button (click)="removeMemberFromList(member)" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-gray-50 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white" aria-label="Close">
@@ -311,7 +257,7 @@
                     </div>
                 </div>
             </div>
-            <button (click)="savegroupExpense()" [disabled]="groupExpenseForm.invalid" type="submit" class="w-full text-white items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button (click)="updateGroupExpense()" [disabled]="groupExpenseForm.invalid" type="submit" class="w-full text-white items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 Save
             </button>
         </form>

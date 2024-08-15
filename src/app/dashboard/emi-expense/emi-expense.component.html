@@ -1,5 +1,114 @@
-<div *ngIf="false; else createEmiBlock">
-    
+<div *ngIf="true; else createEmiBlock" class="grid grid-cols-4 grid-rows-1 gap-0 mt-5">
+    <div class="col-span-1">
+        <div class="w-full max-w-md p-3 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <div class="flow-root">
+                <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <li class="py-3 sm:py-4">
+                        <div class="">
+                            <button (click)="showModal('addLoanModal')" type="button" class="w-full text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Create new loan</button>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4 hover:bg-gray-100" *ngFor="let loan of (loanExpenseList); let index i" [ngClass]="loan.loanId === loanExpense.loanId ? 'bg-gray-100' : 'bg-transparent'">
+                        <div class="flex items-center ">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="../../../assets/images/user.png" alt="Bonnie image">
+                            </div>
+                            <div class="flex-1 min-w-0 ms-4">
+                                <p (click)="loadLoanExpense(loan)" class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    {{loan.lenderName}}
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    {{loan.loanAmount}}
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                <button (click)="deleteLoan(loan.loanId)" type="button" class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 30 30">
+                                      <path d="M 14.984375 2.4863281 A 1.0001 1.0001 0 0 0 14 3.5 L 14 4 L 8.5 4 A 1.0001 1.0001 0 0 0 7.4863281 5 L 6 5 A 1.0001 1.0001 0 1 0 6 7 L 24 7 A 1.0001 1.0001 0 1 0 24 5 L 22.513672 5 A 1.0001 1.0001 0 0 0 21.5 4 L 16 4 L 16 3.5 A 1.0001 1.0001 0 0 0 14.984375 2.4863281 z M 6 9 L 7.7929688 24.234375 C 7.9109687 25.241375 8.7633438 26 9.7773438 26 L 20.222656 26 C 21.236656 26 22.088031 25.241375 22.207031 24.234375 L 24 9 L 6 9 z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div  class="col-span-3 px-2 py-2 pt-0">
+        <div class="w-full p-3 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <div>
+                <!-- Card header -->
+                <div class="items-center justify-between lg:flex">
+                    <div class="mb-4 lg:mb-0">
+                        <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">{{loanExpense.lenderName}}</h3>
+                        <span class="text-base font-normal text-gray-500 dark:text-gray-400">Created on: {{loanExpense.loanDisbursedDate| date:'dd MMM yyyy' }}</span>
+                    </div>
+                    <div class="items-center sm:flex">
+                        <div class="flex items-center">
+                            <a (click)="showModal('')" class="cursor-pointer inline-flex items-center p-2 text-xs font-medium rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
+                                Edit Loan
+                                <svg class="w-4 h-4 ml-1 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Table Start -->
+                <div class="flex flex-col mt-6">
+                    <div class="overflow-x-auto rounded-lg">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden shadow sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                                    <thead class="bg-gray-50 dark:bg-gray-700">
+                                        <tr>
+                                            <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                Sr No
+                                            </th>
+                                            <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                EMI Date
+                                            </th>
+                                            <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                Premium
+                                            </th>
+                                            <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                                Current Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800">
+                                        <tr >
+                                            <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                                                <span class="font-semibold"></span>
+                                            </td>
+                                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                
+                                            </td>
+                                            <td class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                                                
+                                            </td>
+                                            <td class="inline-flex items-center p-4 space-x-2 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Footer -->
+                <div class="flex items-center justify-between pt-3 sm:pt-6">
+                    <div></div>
+                    <div class="flex-shrink-0">
+                        <a href="#" class="inline-flex items-center p-2 text-xs font-medium rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
+                            Get Details in Excel
+                            <svg class="w-4 h-4 ml-1 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <ng-template #createEmiBlock>
@@ -17,8 +126,8 @@
     </div>
 </ng-template>
 
-<div id="addLoanModal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
+<div id="addLoanModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -35,69 +144,138 @@
             </div>
             <!-- Modal body -->
             <form [formGroup]="loanForm" class="p-4 md:p-5">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
+                <div class="grid gap-4 mb-5 grid-cols-3">
+
+                    <div class="col-span-2 h-20">
                         <div class="relative">
-                            <input formControlName="name" type="text" name="name" id="name" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder="" required="" />
-                            <label for="name" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Finance Entity</label>
+                            <input formControlName="lenderName" type="text" name="lenderName" id="lenderName" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder="" />
+                            <label for="lenderName" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Finance Entity</label>
                         </div>
-                        <div *ngIf="loanForm.controls['name'].errors && loanForm.controls['name'].touched">
-                            <p *ngIf="loanForm.controls['name'].errors?.['required']" id="nameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                        <div *ngIf="loanForm.controls['lenderName'].errors && loanForm.controls['lenderName'].touched">
+                            <p *ngIf="loanForm.controls['lenderName'].errors?.['required']" id="lenderNameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
                                 <span class="font-medium">Oops!</span> Field is required.
                             </p>
-                            <p *ngIf="!loanForm.controls['name'].errors?.['required']" id="nameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                            <p *ngIf="loanForm.controls['lenderName'].errors?.['pattern']" id="lenderNameError" class="mt-2 text-xs text-red-600 dark:text-red-400">
                                 <span class="font-medium">Oops!</span> Use only letters
                             </p>
                         </div>
                     </div>
 
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
-                        <input formControlName="amount" type="text" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="₹_____" required="">
-                        <div *ngIf="loanForm.controls['amount'].errors && loanForm.controls['amount'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div *ngIf="loanForm.controls['amount'].errors?.['required']" class="ms-3 text-sm font-medium">This Field is required.</div>
-                          <div class="ms-3 text-sm font-medium">Only numbers are allowed.</div>
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                            <input formControlName="amount" type="text" name="amount" id="amount" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder="&#8377;" />
+                            <label for="amount" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Loan Amount</label>
+                        </div>
+                        <div *ngIf="loanForm.controls['amount'].errors && loanForm.controls['amount'].touched">
+                            <p *ngIf="loanForm.controls['amount'].errors?.['required']" id="amountError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="loanForm.controls['amount'].errors?.['pattern']" id="amountError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only Numbers
+                            </p>
                         </div>
                     </div>
 
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Loan category</label>
-                        <select formControlName="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option value="" selected >Select category</option>
-                            <option value="Home">Home Loan</option>
-                            <option value="Car">Car Loan</option>
-                            <option value="Bike">Bike Loan</option>
-                            <option value="Personal">Personal Loan</option>
-                        </select>
-                        <div *ngIf="loanForm.controls['category'].errors && loanForm.controls['category'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div class="ms-3 text-sm font-medium">Choose category to proceed</div>
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                            <select formControlName="category" id="category" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer">
+                                <option class="text-sm text-green-600 dark:text-green-500" value="" selected >Select Category</option>
+                                <option value="Home">Home Loan</option>
+                                <option value="Car">Car Loan</option>
+                                <option value="Bike">Bike Loan</option>
+                                <option value="Personal">Personal Loan</option>
+                                <option value="Business">Business Loan</option>
+                            </select>
+                            <label for="category" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Loan Category</label>
+                        </div>
+                        <div *ngIf="loanForm.controls['category'].errors && loanForm.controls['category'].touched">
+                            <p *ngIf="loanForm.controls['category'].errors?.['required']" id="categoryError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
                         </div>
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="tenure" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">EMI Tenure</label>
-                        <input formControlName="tenure" type="text" name="tenure" id="tenure" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="₹_____" required="">
-                        <div *ngIf="loanForm.controls['tenure'].errors && loanForm.controls['tenure'].touched" id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                          </svg>
-                          <span class="sr-only">Info</span>
-                          <div *ngIf="loanForm.controls['tenure'].errors?.['required']" class="ms-3 text-sm font-medium">This Field is required.</div>
-                          <div class="ms-3 text-sm font-medium">Only numbers are allowed.</div>
+
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                            <input formControlName="tenure" type="text" name="tenure" id="tenure" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder="" />
+                            <label for="tenure" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Tenure</label>
+                        </div>
+                        <div *ngIf="loanForm.controls['tenure'].errors && loanForm.controls['tenure'].touched">
+                            <p *ngIf="loanForm.controls['tenure'].errors?.['required']" id="tenureError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="loanForm.controls['tenure'].errors?.['pattern']" id="tenureError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only in Number of months
+                            </p>
                         </div>
                     </div>
+
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                            <input formControlName="processingFee" type="text" name="processingFee" id="processingFee" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder="&#8377;" />
+                            <label for="processingFee" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Processing Fee</label>
+                        </div>
+                        <div *ngIf="loanForm.controls['processingFee'].errors && loanForm.controls['processingFee'].touched">
+                            <p *ngIf="loanForm.controls['processingFee'].errors?.['required']" id="processingFeeError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="loanForm.controls['processingFee'].errors?.['pattern']" id="processingFeeError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only Numbers
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                            <input formControlName="interestRate" type="text" name="interestRate" id="interestRate" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder="%"/>
+                            <label for="interestRate" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Rate of Interest</label>
+                        </div>
+                        <div *ngIf="loanForm.controls['interestRate'].errors && loanForm.controls['interestRate'].touched">
+                            <p *ngIf="loanForm.controls['interestRate'].errors?.['required']" id="interestRateError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="loanForm.controls['interestRate'].errors?.['pattern']" id="interestRateError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only Numbers
+                            </p>
+                            <p *ngIf="loanForm.controls['interestRate'].errors?.['max']" id="interestRateError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Rate of Interest should be in percent
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 sm:col-span-1 h-20">                     
+                        <div class="relative max-w-sm">
+                            <input formControlName="loanDisbursedDate" id="datepicker" datepicker datepicker-autohide type="date" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer">
+                            <label for="interestRate" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Loan Disbursed on</label>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 sm:col-span-1 h-20">
+                        <div class="relative">
+                            <input formControlName="emiStartDate" type="text" name="emiStartDate" id="emiStartDate" aria-describedby="outlined_success_help" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-green-600 appearance-none dark:text-white dark:border-green-500 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=""/>
+                            <label for="emiStartDate" class="absolute text-sm text-green-600 dark:text-green-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">EMI Date</label>
+                        </div>
+                        <div *ngIf="loanForm.controls['emiStartDate'].errors && loanForm.controls['emiStartDate'].touched">
+                            <p *ngIf="loanForm.controls['emiStartDate'].errors?.['required']" id="emiStartDateError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Field is required.
+                            </p>
+                            <p *ngIf="loanForm.controls['emiStartDate'].errors?.['pattern']" id="emiStartDateError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Use only Numbers
+                            </p>
+                            <p *ngIf="loanForm.controls['emiStartDate'].errors?.['max'] && loanForm.controls['emiStartDate'].errors?.['min']" id="emiStartDateError" class="mt-2 text-xs text-red-600 dark:text-red-400">
+                                <span class="font-medium">Oops!</span> Date should be form 1 to 31
+                            </p>
+                        </div>
+                    </div>
+
+
                 </div>
-                <button (click)="addLoan()" [disabled]="loanForm.invalid" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Add Expense
-                </button>
+                <div class="text-center" *ngIf="loanForm.invalid">
+                    <button type="button" class="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Save</button>
+                </div>
+                <div class="text-center" *ngIf="loanForm.valid">
+                    <button (click)="addLoan()" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                </div>
                 <div *ngIf="errorMessage" id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
                   <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
                       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

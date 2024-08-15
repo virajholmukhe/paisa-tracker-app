@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit{
 
  signOut(){
    this.tokenService.clearToken();
-   window.location.reload();
+   this.isLoggedIn = false;
    this.router.navigate(['/signin']);
  }
 

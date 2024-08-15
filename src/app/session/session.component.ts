@@ -9,11 +9,12 @@ import { AuthenticationService } from '../services/authentication.service';
 import { TokenService } from '../services/token.service';
 import { JwtUtils } from '../utils/jwtUtils';
 import { RegistrationRequest } from '../models/registration-request';
+import { HeaderComponent } from "../header/header.component";
 
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientXsrfModule],
+  imports: [RouterOutlet, RouterLink, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientXsrfModule, HeaderComponent],
   templateUrl: './session.component.html',
   styleUrl: './session.component.css'
 })

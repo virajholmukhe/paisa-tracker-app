@@ -1,103 +1,134 @@
 <div class="p-3 rounded-lg" id="dashboard-tab-content" role="tabpanel" aria-labelledby="dashboard-tab-content">
     <div class="grid grid-cols-12 gap-3">
         <div class="col-span-3 row-span-2 ">
-            <div class="overflow-auto">
-             <!-- Activity Logs -->
+            <div class="">
+                <!-- Activity Logs -->
                 <div class="text-base list-none bg-white divide-y divide-gray-100 rounded border dark:divide-gray-600 dark:bg-gray-700 h-full" id="notification-dropdown">
                     <div class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    Activity Logs
+                        Activity Logs
                     </div>
-                    <div *ngIf="expenseList.length > 0 ; else noActivitiesBlock">
-                    <a *ngFor="let expense of expenseList" class="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
-                        <div class="flex-shrink-0">
-                            <img class="rounded-full w-11 h-11" src="../../assets/images/user.png" alt="Jese image">
-                        </div>
-                        <div *ngIf="expense.expenseCategory === 'Borrow' ; else elseIf1"  class="w-full pl-3">
-                            <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
-                                You Borrowed 
-                                <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span> 
-                                from 
-                                <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span> 
+                    <div class="h-96 overflow-scroll scrollbar-hide" *ngIf="expenseList.length > 0 ; else noActivitiesBlock">
+                        <a *ngFor="let expense of expenseList" class="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
+                            <div class="flex-shrink-0">
+                                <img class="rounded-full w-11 h-11" src="../../assets/images/user.png" alt="Jese image">
                             </div>
-                            <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
-                        </div>
-                        <ng-template #elseIf1 class="w-full pl-3">
-                            <ng-container *ngIf="expense.expenseCategory === 'Lend' ; else elseIf2">
-                                <div class="w-full pl-3">
+                            <div *ngIf="expense.expenseCategory === 'Borrow' ; else elseIf1"  class="w-full pl-3">
                                 <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
-                                    You Lended 
+                                    You Borrowed 
                                     <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span> 
                                     from 
                                     <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span> 
                                 </div>
                                 <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
-                                </div>
-                            </ng-container>
-                        </ng-template>
-                        <ng-template #elseIf2>
-                            <div class="w-full pl-3">
-                                <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
-                                You Paid 
-                                <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span>
-                                to 
-                                <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span>
-                                for
-                                <span class="font-medium text-gray-900 dark:text-white">{{expense.expenseCategory}}</span>
-                                </div>
-                                <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
                             </div>
-                        </ng-template>
-                    </a>
+                            <ng-template #elseIf1 class="w-full pl-3">
+                                <ng-container *ngIf="expense.expenseCategory === 'Lend' ; else elseIf2">
+                                    <div class="w-full pl-3">
+                                    <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                                        You Lended 
+                                        <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span> 
+                                        from 
+                                        <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span> 
+                                    </div>
+                                    <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
+                                    </div>
+                                </ng-container>
+                            </ng-template>
+                            <ng-template #elseIf2>
+                                <div class="w-full pl-3">
+                                    <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                                    You Paid 
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{expense.amount}} &#8377;</span>
+                                    to 
+                                    <span class="font-medium text-gray-900 dark:text-white">{{expense.paidTo[0]}}</span>
+                                    for
+                                    <span class="font-medium text-gray-900 dark:text-white">{{expense.expenseCategory}}</span>
+                                    </div>
+                                    <div class="text-xs font-medium text-primary-700 dark:text-primary-400">10 minutes ago</div>
+                                </div>
+                            </ng-template>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-span-6">
-            <div class="">
-                <!-- Main widget -->
-                <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex-shrink-0">
-                            <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white">12000 &#8377;</span>
-                            <h3 class="text-base font-light text-gray-500 dark:text-gray-400">Sales this week</h3>
-                        </div>
-                        <div class="flex items-center justify-end flex-1 text-base font-medium text-green-500 dark:text-green-400"> 12.5%
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
+            <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+                <div class="flex justify-between border-gray-200 border-b dark:border-gray-700 pb-3">
+                <dl>
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Pending</dt>
+                    <dd class="leading-none text-3xl font-bold text-gray-900 dark:text-white">{{chartData.lend - chartData.borrow}} &#8377;</dd>
+                </dl>
+                </div>
+            
+                <div class="grid grid-cols-2 py-3">
+                <dl>
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Lended</dt>
+                    <dd class="leading-none text-xl font-bold text-green-500 dark:text-green-400">{{chartData.lend}} &#8377;</dd>
+                </dl>
+                <dl>
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Borrowed</dt>
+                    <dd class="leading-none text-xl font-bold text-red-600 dark:text-red-500">-{{chartData.borrow}} &#8377;</dd>
+                </dl>
+                </div>
+            
+                <div id="bar-chart"></div>
+                <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+                    <div class="flex justify-between items-center pt-5">
+                    <!-- Button -->
+                    <button
+                        id="dropdownDefaultButton"
+                        data-dropdown-toggle="lastDaysdropdown"
+                        data-dropdown-placement="bottom"
+                        class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
+                        type="button">
+                        Last 6 months
+                        <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
+                            </li>
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
+                            </li>
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
+                            </li>
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
+                            </li>
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
+                            </li>
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 6 months</a>
+                            </li>
+                            <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last year</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div id="main-chart"></div>
-                    <!-- Card Footer -->
-                    <div class="flex items-center justify-between pt-3 mt-4 border-t border-gray-200 sm:pt-6 dark:border-gray-700">
-                        <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" type="button" data-dropdown-toggle="weekly-sales-dropdown">Last 7 days <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
-                        <!-- Dropdown menu -->
-                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="weekly-sales-dropdown">
-                            <ul class="py-1" role="none">
-                                <li>
-                                    <a (click)="getDaysList(7)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Last 7 days</a>
-                                </li>
-                                <li>
-                                    <a (click)="getDaysList(30)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Last 30 days</a>
-                                </li>
-                                <li>
-                                    <a (click)="getDaysList(90)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Last 90 days</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="#" class="inline-flex items-center p-2 text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
-                                Sales Report
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </a>
-                        </div>
+                    <a
+                        href="#"
+                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
+                        Revenue Report
+                        <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                        </svg>
+                    </a>
                     </div>
                 </div>
             </div>
+            
         </div>
-       <div class="col-span-3">
+        <div class="col-span-3">
             <!-- Categories Chart -->
-            <div class="max-w-sm w-full bg-white rounded-lg border dark:bg-gray-800 p-4 md:p-6">
+            <div class="w-full bg-white rounded-lg border dark:bg-gray-800 p-4 md:p-6">
                 <div class="flex justify-between mb-3">
                     <div class="flex justify-center items-center">
                     <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white pe-1">Expenses in Categories</h5>
@@ -119,12 +150,12 @@
                     </select>
                     </div>
                     <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
-                    <li class="w-full">
-                        <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top products</button>
-                    </li>
-                    <li class="w-full">
-                        <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top Customers</button>
-                    </li>
+                        <li class="w-full">
+                            <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top products</button>
+                        </li>
+                        <li class="w-full">
+                            <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Top Customers</button>
+                        </li>
                     </ul>
                     <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
                     <div class="hidden pt-4" id="faq" role="tabpanel" aria-labelledby="faq-tab">
@@ -178,7 +209,7 @@
                     </div>
                 </div>
             </div>
-       </div>
+        </div>
     </div>
 </div>
 

@@ -1,41 +1,55 @@
-<!-- <div class="container mx-auto px-20"> -->
-<ng-template #elseBlock>
-   <div>
-      add expenses
-   </div>
-</ng-template>
-
-<div class="">
-   <div class="mb-1 border-gray-200 dark:border-gray-700">
-      <ul class="flex flex-wrap mb-0 text-sm text-center justify-center" id="dashboardBar" data-tabs-toggle="#dashboardBar-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
-          <li class="me-2" role="presentation">
+<!-- <div class="w-screen h-screen">
+  <nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="../../assets/images/logo2.png"  class="h-8" alt="Paisa Tracker Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">PaisaTracker</span>
+      </a>
+      <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button (click)="signOut()" type="button" class="px-3 py-2 text-xs font-medium text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 rounded-lg text-center dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Sign out</button>
+      </div>
+      <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+        <div class="mb-1 border-gray-200 dark:border-gray-700">
+          <ul class="flex flex-wrap mb-0 text-sm text-center justify-center" id="dashboardBar" data-tabs-toggle="#dashboardBar-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+            <li class="me-2" role="presentation">
               <button class="inline-block p-2 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard-tab-content" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Dashboard</button>
-          </li>
-          <li class="me-2" role="presentation">
-            <button class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="account-tab" data-tabs-target="#account-tab-content" type="button" role="tab" aria-controls="account" aria-selected="false">Account</button>
-          </li>
-          <li class="me-2" role="presentation">
+            </li>
+            <li class="me-2" role="presentation">
+              <button class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="account-tab" data-tabs-target="#account-tab-content" type="button" role="tab" aria-controls="account" aria-selected="false">Account</button>
+            </li>
+            <li class="me-2" role="presentation">
               <button class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="groups-tab" data-tabs-target="#groups-tab-content" type="button" role="tab" aria-controls="groups" aria-selected="false">Groups</button>
-          </li>
-          <li class="me-2" role="presentation">
+            </li>
+            <li class="me-2" role="presentation">
               <button class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="emi-tab" data-tabs-target="#emi-tab-content" type="button" role="tab" aria-controls="emi" aria-selected="false">EMI's</button>
-          </li>
-      </ul>
-   </div>
-   <div id="dashboardBar-content">
-      <div class="hidden p-3 rounded-lg" id="dashboard-tab-content" role="tabpanel" aria-labelledby="account-tab-content">
-         <!-- <app-personal-expense [(expenseList)]="expenseList"></app-personal-expense> -->
-         <!-- <app-main-screen [expenseList]="expenseList"></app-main-screen> -->
-         <app-emi-expense></app-emi-expense> 
-      </div>
-      <div class="hidden p-3 rounded-lg" id="account-tab-content" role="tabpanel" aria-labelledby="account-tab-content">
-         <app-personal-expense [(expenseList)]="expenseList"></app-personal-expense>
-      </div>
-      <div class="hidden p-3 rounded-lg" id="groups-tab-content" role="tabpanel" aria-labelledby="groups-tab-content">
-         <app-group-expense></app-group-expense>
-      </div>
-      <div class="hidden p-3 rounded-lg" id="emi-tab-content" role="tabpanel" aria-labelledby="emi-tab-content">
-         <app-emi-expense></app-emi-expense>
-      </div>
-   </div>
-</div>
+            </li>
+            <li class="me-2" role="presentation">
+              <button class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile-tab-content" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+            </li>
+          </ul>
+        </div>
+    </div>
+    </div>
+  </nav>
+  <div id="dashboardBar-content">
+    <div class="hidden p-3 rounded-lg" id="dashboard-tab-content" role="tabpanel" aria-labelledby="account-tab-content">
+      <app-personal-expense [(expenseList)]="expenseList"></app-personal-expense>
+      <app-group-expense></app-group-expense>
+      <app-main-screen [expenseList]="expenseList"></app-main-screen>
+      <app-emi-expense [(loanExpenseList)]="loanExpenseList"></app-emi-expense>
+    </div>
+    <div class="hidden p-3 rounded-lg" id="account-tab-content" role="tabpanel" aria-labelledby="account-tab-content">
+      <app-personal-expense [(expenseList)]="expenseList"></app-personal-expense>
+    </div>
+    <div class="hidden p-3 rounded-lg" id="groups-tab-content" role="tabpanel" aria-labelledby="groups-tab-content">
+      <app-group-expense></app-group-expense>
+    </div>
+    <div class="hidden p-3 rounded-lg" id="emi-tab-content" role="tabpanel" aria-labelledby="emi-tab-content">
+      <app-emi-expense [(loanExpenseList)]="loanExpenseList"></app-emi-expense>
+    </div>
+    <div class="hidden p-3 rounded-lg" id="profile-tab-content" role="tabpanel" aria-labelledby="profile-tab-content">
+      <app-profile></app-profile>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div> -->

@@ -60,6 +60,14 @@ export class PersonalExpenseServiceService {
     );
   }
 
+  getCategoryChartData(): Observable<any>{
+    return this.http.get(this.API_BASE_URL+'/expense/get-category-chart-data').
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(err: HttpErrorResponse): Observable<any>{
     let errMsg = '';
     if(err.error instanceof Error){

@@ -4,6 +4,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { Expense } from '../../models/expense';
 import { initFlowbite } from 'flowbite';
 import ApexCharts from 'apexcharts';
+import { PersonalExpenseServiceService } from '../../services/personal-expense-service.service';
+import { ChartData } from '../../models/chart-data';
 
 @Component({
   selector: 'app-main-screen',
@@ -14,54 +16,61 @@ import ApexCharts from 'apexcharts';
 })
 export class MainScreenComponent implements OnInit {
   
-  @Input()
-  expenseList!: Array<Expense>;
-
+  expenseList: Array<Expense> = {} as Array<Expense>;
 
   expenseChart!: ApexCharts;
   categoryCharts!: ApexCharts;
+  errorMessage = '';
+  chartData: ChartData = {} as ChartData;
 
   constructor(
-
+    private personalExpenseService: PersonalExpenseServiceService,
   ){ }
   
   ngOnInit(): void {
     initFlowbite();
+    this.getPersonalExpenseList();
+  }
 
-    this.expenseChartRender(7);
+  getPersonalExpenseList(){
+    console.log("getExpenseList() method called");
+    this.personalExpenseService.getExpenseList().subscribe({
+      next: res => this.expenseList = res,
+      error: err => this.errorMessage = err,
+      complete: () => {
+        this.getCategoryChartData();
+      }
+    });
+  }
 
+  getCategoryChartData(){
+    this.personalExpenseService.getCategoryChartData().subscribe({
+      next: res => this.chartData = res,
+      error: err => this.errorMessage = err,
+      complete: () => this.expenseChartRender(7)
+    });
+  }
+
+  public expenseChartRender(days: number){
+    this.expenseChart = new ApexCharts(document.getElementById('bar-chart'), this.getMainChartOptions());
+    this.expenseChart.render();
     this.categoryCharts = new ApexCharts(document.getElementById('donut-chart'), this.getCategoryChartOptions());
     this.categoryCharts.render();
   }
 
-  public getDaysList(days: number){
-    var today = new Date();
-    var dateList:any = [];
-    for (let index = 1; index < (days+1); index++) {
-      var priorDate = new Date(new Date().setDate(today.getDate() - index)).getDate();
-      dateList.push(priorDate)
-    }
-    // console.log(dateList);
-    return dateList;
-  }
-
-  public expenseChartRender(days: number){
-    var dateList = this.getDaysList(days);
-    var borrowList: any = [];
-    var lendList: any = [];
-
-    this.expenseList.forEach(function (value) {
-      console.log(value.expenseCreated);
-    });
-
-    this.expenseChart = new ApexCharts(document.getElementById('main-chart'), this.getMainChartOptions(dateList, borrowList, lendList));
-    this.expenseChart.render();
-    
+  public getMonths(){
+    const date = new Date();  // 2009-11-10
+    const month1 = date.toLocaleString('default', { month: 'short' });
+    date.setMonth(date.getMonth() - 1);
+    const month2 = date.toLocaleString('default', { month: 'short' });
+    date.setMonth(date.getMonth() - 1);
+    const month3 = date.toLocaleString('default', { month: 'short' });
+    return [month1, month2, month3]
   }
 
   public getCategoryChartOptions() {
     return {
-      series: [35.1, 23.5, 2.4, 5.4],
+      series: [this.chartData.lend, this.chartData.food, this.chartData.shopping, this.chartData.bill, this.chartData.fuel],
       colors: ["#1C64F2", "#16BDCA", "#FDBA8C", "#E74694"],
       chart: {
         height: 320,
@@ -85,10 +94,14 @@ export class MainScreenComponent implements OnInit {
               total: {
                 showAlways: true,
                 show: true,
-                label: "Unique visitors",
+                label: "Total Spent",
                 fontFamily: "Inter, sans-serif",
-                formatter: (value: string) => {
-                  return "10,000" + "k"
+                formatter: (w: any) => {
+                  const sum = w.globals.seriesTotals.reduce((a:any, b:any) => {
+                    return a + b
+                  }, 0)
+
+                  return '' + sum + '₹'
                 },
               },
               value: {
@@ -96,7 +109,7 @@ export class MainScreenComponent implements OnInit {
                 fontFamily: "Inter, sans-serif",
                 offsetY: -20,
                 formatter: (value: string) => {
-                  return value + "k"
+                  return value + "₹"
                 },
               },
             },
@@ -109,7 +122,7 @@ export class MainScreenComponent implements OnInit {
           top: -2,
         },
       },
-      labels: ["Direct", "Sponsor", "Affiliate", "Email marketing"],
+      labels: ["Lend", "Food", "Shopping", "Bill", "Fuel"],
       dataLabels: {
         enabled: false,
       },
@@ -120,14 +133,14 @@ export class MainScreenComponent implements OnInit {
       yaxis: {
         labels: {
           formatter: (value: string) => {
-            return value + "k"
+            return value + "₹"
           },
         },
       },
       xaxis: {
         labels: {
           formatter: (value: string) => {
-            return value + "k"
+            return value + "₹"
           },
         },
         axisTicks: {
@@ -140,147 +153,96 @@ export class MainScreenComponent implements OnInit {
     }
   }
 
-  public getMainChartOptions(dateList:any[], borrowList:any[], lendList:any[],) {
-
-    let mainChartColors = {
-      borderColor: '',
-      labelColor: '',
-      opacityFrom: 0,
-      opacityTo: 0,
-    }
-  
-    if (document.documentElement.classList.contains('dark')) {
-      mainChartColors = {
-        borderColor: '#374151',
-        labelColor: '#9CA3AF',
-        opacityFrom: 0,
-        opacityTo: 0.15,
-      };
-    } else {
-      mainChartColors = {
-        borderColor: '#F3F4F6',
-        labelColor: '#6B7280',
-        opacityFrom: 0.45,
-        opacityTo: 0,
-      }
-    }
-  
+  public getMainChartOptions() {
     return {
+      series: [
+        {
+          name: "Borrow",
+          color: "#31C48D",
+          data: [this.chartData.borrow, 0, 0],
+        },
+        {
+          name: "Lend",
+          data: [this.chartData.lend, 0, 0],
+          color: "#F05252",
+        }
+      ],
       chart: {
-        height: 420,
-        type: 'area',
-        fontFamily: 'Inter, sans-serif',
-        foreColor: mainChartColors.borderColor,
+        sparkline: {
+          enabled: false,
+        },
+        type: "bar",
+        width: "100%",
+        height: 400,
         toolbar: {
-          show: false
+          show: false,
         }
       },
       fill: {
-        type: 'gradient',
-        gradient: {
-          enabled: true,
-          opacityFrom: mainChartColors.opacityFrom,
-          opacityTo: mainChartColors.opacityTo
-        }
+        opacity: 1,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: "100%",
+          borderRadiusApplication: "end",
+          borderRadius: 6,
+          dataLabels: {
+            position: "top",
+          },
+        },
+      },
+      legend: {
+        show: true,
+        position: "bottom",
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       tooltip: {
-        style: {
-          fontSize: '14px',
-          fontFamily: 'Inter, sans-serif',
+        shared: true,
+        intersect: false,
+        formatter: (value: string) => {
+          return value + "k"
         },
-      },
-      grid: {
-        show: true,
-        borderColor: mainChartColors.borderColor,
-        strokeDashArray: 1,
-        padding: {
-          left: 35,
-          bottom: 15
-        }
-      },
-      series: [
-        {
-          name: 'Borrow',
-          data: borrowList,
-          color: '#1A56DB'
-        },
-        {
-          name: 'Lend',
-          data: lendList,
-          color: '#FDBA8C'
-        }
-      ],
-      markers: {
-        size: 5,
-        strokeColors: '#ffffff',
-        hover: {
-          size: undefined,
-          sizeOffset: 3
-        }
       },
       xaxis: {
-        categories: dateList,
         labels: {
+          show: true,
           style: {
-            colors: [mainChartColors.labelColor],
-            fontSize: '14px',
-            fontWeight: 500,
+            fontFamily: "Inter, sans-serif",
+            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
           },
+          formatter: (value: string) => {
+            return value + "k"
+          },
+        },
+        categories: this.getMonths(),
+        axisTicks: {
+          show: false,
         },
         axisBorder: {
-          color: mainChartColors.borderColor,
-        },
-        axisTicks: {
-          color: mainChartColors.borderColor,
-        },
-        crosshairs: {
-          show: true,
-          position: 'back',
-          stroke: {
-            color: mainChartColors.borderColor,
-            width: 1,
-            dashArray: 10,
-          },
+          show: false,
         },
       },
       yaxis: {
         labels: {
+          show: true,
           style: {
-            colors: [mainChartColors.labelColor],
-            fontSize: '14px',
-            fontWeight: 500,
-          },
-          formatter: (value: string) => {
-            return value + " ₹";
-          }
-        },
-      },
-      legend: {
-        fontSize: '14px',
-        fontWeight: 500,
-        fontFamily: 'Inter, sans-serif',
-        labels: {
-          colors: [mainChartColors.labelColor]
-        },
-        itemMargin: {
-          horizontal: 10
-        }
-      },
-      responsive: [
-        {
-          breakpoint: 1024,
-          options: {
-            xaxis: {
-              labels: {
-                show: false
-              }
-            }
+            fontFamily: "Inter, sans-serif",
+            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
           }
         }
-      ]
+      },
+      grid: {
+        show: true,
+        strokeDashArray: 4,
+        padding: {
+          left: 2,
+          right: 2,
+          top: -20
+        },
+      }
     };
   }
 
