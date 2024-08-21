@@ -104,13 +104,13 @@ export class GroupExpenseComponent implements OnInit{
     });
   }
 
-  removeGroup(expenseGroupId: number){
-    this.expenseGroupId = expenseGroupId;
+  removeGroup(groupExpense: GroupExpense){
+    this.loadGroupExpense(groupExpense);
     this.deleteGroupModal.show();
   }
  
   deleteGroup(){
-    this.groupExpenseService.removeExpense(Number(this.expenseGroupId)).subscribe({
+    this.groupExpenseService.removeExpense(Number(this.groupExpense.groupId)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {

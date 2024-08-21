@@ -9,5 +9,7 @@ export interface GroupExpense {
   groupCreated: string;
   groupMembers: Array<string>;
   groupName: string;
+  totalAmount: number;
+  totalUnpaidAmount: number;
   
 }

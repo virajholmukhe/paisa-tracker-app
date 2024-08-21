@@ -1,16 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface Expense {
-  amount: number;
+  id: number;
+  name: string;
+  owner: string;
+  category: string;
   description: string;
-  expenseCategory: string;
-  expenseId: number;
-  expenseOwner: string;
-  isRemoved: boolean;
-  isSettled: boolean;
+  amount: number;
+  unsettledAmount: number;
+  unsettledAmountChange: Array<number>;
   paidBy: string;
   paidTo: Array<string>;
-  unsettledAmountChange: Array<number>;
-  unsettledAmount: number;
-  expenseCreated: string;
+  isSettled: boolean;
+  isRemoved: boolean;
+  createdOn: string;
+  paidOn: string;
+  expenseShare: number;
 }

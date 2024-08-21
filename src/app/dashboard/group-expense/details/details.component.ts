@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GroupExpense } from '../../../models/group-expense';
 import { initFlowbite, Modal, ModalInterface } from 'flowbite';
 import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
@@ -42,6 +42,10 @@ export class DetailsComponent implements OnInit{
       description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]],
       members: this.formBuilder.array([], [Validators.required])
     });
+    // this.groupExpense.groupMembers.forEach(member => {
+    //   const checkedArray = this.addExpenseForm.get('members') as FormArray;
+    //   checkedArray.push(new FormControl());
+    // });
 
     this.groupExpenseForm = this.formBuilder.group({
       groupName: ['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
@@ -74,9 +78,9 @@ export class DetailsComponent implements OnInit{
     expense.paidTo = this.addExpenseForm.get('members')?.value;
     expense.amount = this.addExpenseForm.get('amount')?.value;
     expense.unsettledAmount = this.addExpenseForm.get('amount')?.value;
-    expense.expenseCategory = this.addExpenseForm.get('category')?.value;
+    expense.category = this.addExpenseForm.get('category')?.value;
     expense.description = this.addExpenseForm.get('description')?.value;
-    expense.expenseOwner = JwtUtils.getUsername() as string;
+    expense.owner = JwtUtils.getUsername() as string;
     expense.paidBy = JwtUtils.getUsername() as string;
     
     this.groupExpenseService.addExpense(expense, this.groupExpense.groupId).subscribe({
@@ -86,7 +90,7 @@ export class DetailsComponent implements OnInit{
       error: err => this.errorMessage = err,
       complete: () => {
         this.getGroupExpense(),
-        this.addExpenseForm.reset();
+        this.addExpenseForm.get('');
       }
     });
     this.createExpenseModal.hide();
@@ -99,6 +103,7 @@ export class DetailsComponent implements OnInit{
       complete: () => console.log("groupExpense updated")
     });
   }
+
 
   onChangeCheckBox(event: any){
     const checkedValue = event.target.value;
@@ -117,6 +122,23 @@ export class DetailsComponent implements OnInit{
     }
   }
 
+  addMemberToList(name: string){
+    
+    if(name.length > 0){
+      this.groupMembersList.push(name);
+    }
+  }
+  
+  removeMemberFromList(name: string){
+    const index: number = this.groupMembersList.indexOf(name);
+    if(index !== -1) {
+      this.groupMembersList.splice(index, 1);
+    }
+  }
+  
+  updateGroupExpense(){
+    
+  }
 
   hideModal(modalId: string){
     switch(modalId) { 
@@ -130,7 +152,7 @@ export class DetailsComponent implements OnInit{
       }
     }
   }
-
+  
   showModal(modalId: string){
     switch(modalId) { 
       case "createExpenseModal": { 
@@ -143,25 +165,6 @@ export class DetailsComponent implements OnInit{
       }
     }
   }
-
-  addMemberToList(name: string){
-
-    if(name.length > 0){
-      this.groupMembersList.push(name);
-    }
-  }
-
-  removeMemberFromList(name: string){
-    const index: number = this.groupMembersList.indexOf(name);
-    if(index !== -1) {
-        this.groupMembersList.splice(index, 1);
-    }
-  }
-
-  updateGroupExpense(){
-    
-  }
-
-
-
+  
+  
 }

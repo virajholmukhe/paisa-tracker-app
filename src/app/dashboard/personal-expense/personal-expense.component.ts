@@ -75,10 +75,10 @@ export class PersonalExpenseComponent implements OnInit{
     expense.paidTo.push(this.addExpenseForm.get('name')?.value);
     expense.amount = this.addExpenseForm.get('amount')?.value;
     expense.unsettledAmount = this.addExpenseForm.get('amount')?.value;
-    expense.expenseCategory = this.addExpenseForm.get('category')?.value;
+    expense.category = this.addExpenseForm.get('category')?.value;
     expense.description = this.addExpenseForm.get('description')?.value;
-    expense.expenseOwner = JwtUtils.getUsername() as string;
-    if(expense.expenseCategory == 'Borrow'){
+    expense.owner = JwtUtils.getUsername() as string;
+    if(expense.category == 'Borrow'){
       expense.paidBy = expense.paidTo[0];
       expense.paidTo = [JwtUtils.getUsername() as string];
     }else {
@@ -134,7 +134,7 @@ export class PersonalExpenseComponent implements OnInit{
   settleUpExpense(expense: Expense){
     if(expense.paidTo?.length){
       this.editExpenseForm.controls['name'].setValue(expense.paidTo[0]);
-      this.editExpenseForm.controls['expenseId'].setValue(expense.expenseId);
+      this.editExpenseForm.controls['expenseId'].setValue(expense.id);
       this.editExpenseForm.controls['totalAmount'].setValue(expense.amount);
       this.editExpenseForm.controls['unsettledAmount'].setValue(expense.unsettledAmount);
     }

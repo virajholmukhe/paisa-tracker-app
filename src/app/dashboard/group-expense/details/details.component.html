@@ -17,7 +17,7 @@
         </div>
     </div>
 </div>
- 
+
 <!-- Table Start -->
 <div *ngIf="groupExpense.expenseDTO.length > 0" class="flex flex-col mt-6">
     <div class="overflow-x-auto rounded-lg">
@@ -27,10 +27,10 @@
             <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
                     <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                        Expense Details
+                        Date
                     </th>
                     <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                        Date
+                        Expense Details
                     </th>
                     <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
                         Amount
@@ -39,26 +39,47 @@
                         Paid By
                     </th>
                     <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                        Splited with
+                        Your Share
                     </th>
+                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                        Settle-up
+                    </th>
+                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                        Edit
+                    </th>
+                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                        Remove
+                    </th>
+                    
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800">
                 <tr *ngFor="let expense of groupExpense.expenseDTO">
-                    <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                        <span class="font-semibold">{{expense.expenseCategory}}</span>
-                    </td>
                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                        {{expense.expenseCreated | date: 'fullDate'}}
+                        {{expense.createdOn | date: 'dd MMM'}}
+                    </td>
+                    <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="font-semibold">{{expense.category}}</span>
                     </td>
                     <td class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
                         {{expense.amount}}
                     </td>
                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                        {{expense.expenseOwner}}
+                        {{expense.owner}}
+                    </td>
+                    <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                        {{expense.amount/expense.paidTo.length}}
+                    </td>
+                    <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                        <button class="w-full bg-green-500 hover:bg-green-400 text-white font-bold py-1 px-4 border-b-4 border-green-700 hover:border-green-500">
+                            Settle-up
+                          </button>
+                    </td>
+                    <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+
                     </td>
                     <td class="inline-flex items-center p-4 space-x-2 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                        {{expense.paidTo}}
+                        
                     </td>
                 </tr>
             </tbody>
@@ -78,7 +99,7 @@
     </div>
 </div>
 
-<!-- Add Expense modal -->
+<!-- Add Expense Modal -->
 <div id="createExpenseModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
@@ -198,7 +219,7 @@
     </div>
 </div> 
 
-<!-- Add Expense modal -->
+<!-- Edit Expense Modal -->
 <div id="editGroupExpenseModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <!-- Modal content -->
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -262,4 +283,5 @@
             </button>
         </form>
     </div>
-</div> 
+</div>
+
