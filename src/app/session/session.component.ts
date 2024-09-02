@@ -40,12 +40,14 @@ export class SessionComponent implements OnInit{
 
     if(this.tokenService.token && !JwtUtils.isTokenExpired()){
       this.router.navigate(['/dashboard'])
+    }else{
+      localStorage.clear();
     }
 
     this.showRegister = this.route.snapshot.data['showRegister'] as string;
-
+    this.errorMsg = '';
     this.loginForm = this.formBuilder.group({
-      username:['', [Validators.required]],
+      username:['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.-]*$')]],
       password: ['', [Validators.required]]
     });
 
@@ -55,8 +57,6 @@ export class SessionComponent implements OnInit{
       email:['', [Validators.required]],
       password: ['', [Validators.required]]
     });
-
-    console.log(this.showRegister);
   }
 
   login(){
@@ -65,13 +65,14 @@ export class SessionComponent implements OnInit{
     this.authRequest.password = this.loginForm.get('password')?.value;
     this.authService.authenticate(this.authRequest).subscribe({
       next: (result)=>{
-        // console.log(result);
         this.tokenService.token = result.token as string;
         window.location.reload();
       },
       error: (err)=>{
         this.errorMsg = err;
-        // console.log(err);
+      },
+      complete: ()=>{
+        this.errorMsg = '';
       }
     });
   }
@@ -83,15 +84,15 @@ export class SessionComponent implements OnInit{
     this.registrationRequest.password = this.registerForm.get('password')?.value;
 
     this.authService.register(this.registrationRequest).subscribe({
-      next: (result)=>{
-        // console.log(result);
+      next: ()=>{
         this.router.navigate(['/signin'])
       },
       error: (err)=>{
         this.errorMsg = err;
-        // console.log(err);
+      },
+      complete: ()=>{
+        this.errorMsg = '';
       }
     });
   }
-
 }

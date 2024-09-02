@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { initFlowbite } from 'flowbite';
 import { Expense } from '../../models/expense';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
-import { PersonalExpenseServiceService } from '../../services/personal-expense-service.service';
+import { PersonalExpenseService } from '../../services/personal-expense-service.service';
 import { JwtUtils } from '../../utils/jwtUtils';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -36,7 +36,7 @@ export class PersonalExpenseComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private service: PersonalExpenseServiceService,
+    private personalExpenseService: PersonalExpenseService,
   ){}
 
   ngOnInit(): void {
@@ -84,7 +84,9 @@ export class PersonalExpenseComponent implements OnInit{
     }else {
       expense.paidBy = JwtUtils.getUsername() as string;
     }
-    this.service.addExpense(expense).subscribe({
+    let usernameIsAvailable = false;
+    this.personalExpenseService
+    this.personalExpenseService.addExpense(expense).subscribe({
       next: expense => {
         this.expense = expense;
       },
@@ -105,7 +107,7 @@ export class PersonalExpenseComponent implements OnInit{
   
   getExpenseList(){
     console.log("getExpenseList() method called");
-    this.service.getExpenseList().subscribe({
+    this.personalExpenseService.getExpenseList().subscribe({
       next: res => this.expenseList = res,
       error: err => this.errorMessage = err,
       complete: () => {
@@ -121,7 +123,7 @@ export class PersonalExpenseComponent implements OnInit{
 
   deleteExpense(){
     console.log(this.expenseId);
-    this.service.removeExpense(Number(this.expenseId)).subscribe({
+    this.personalExpenseService.removeExpense(Number(this.expenseId)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {
@@ -144,7 +146,7 @@ export class PersonalExpenseComponent implements OnInit{
   editExpense(){
     let settledAmount:number = this.editExpenseForm.controls['settledAmount'].value;
     let expenseId: number = this.editExpenseForm.controls['expenseId'].value;
-    this.service.settleUpExpense(expenseId, settledAmount).subscribe({
+    this.personalExpenseService.settleUpExpense(expenseId, settledAmount).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {
@@ -154,7 +156,7 @@ export class PersonalExpenseComponent implements OnInit{
     });
     this.settleupModal.hide();
   }
-  
+   
   hideModal(modalId: string){
     switch(modalId) { 
       case "addExpenseModal": { 

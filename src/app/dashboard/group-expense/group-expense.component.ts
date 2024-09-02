@@ -7,6 +7,7 @@ import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DetailsComponent } from "./details/details.component";
+import { Expense } from '../../models/expense';
 
 @Component({
   selector: 'app-group-expense',
@@ -31,8 +32,8 @@ export class GroupExpenseComponent implements OnInit{
 
   ngOnInit(): void {
     initFlowbite();
+    this.groupExpense.expenseId = [];
     this.getGroupExpenseList();
-    
     this.groupExpenseForm = this.formBuilder.group({
       groupName: ['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       groupMembers: [''],
@@ -58,6 +59,7 @@ export class GroupExpenseComponent implements OnInit{
     this.groupMembersList = [];
     this.errorMessage = '';
   }
+
   createGroup(){
     var groupExpense = {} as GroupExpense;
     groupExpense.groupName = this.groupExpenseForm.get('groupName')?.value;
@@ -76,7 +78,6 @@ export class GroupExpenseComponent implements OnInit{
 
   loadGroupExpense(groupExpense: GroupExpense){
     this.groupExpense = groupExpense;
-    
   }
   
 
@@ -110,7 +111,7 @@ export class GroupExpenseComponent implements OnInit{
   }
  
   deleteGroup(){
-    this.groupExpenseService.removeExpense(Number(this.groupExpense.groupId)).subscribe({
+    this.groupExpenseService.removeGroupExpense(Number(this.groupExpense.groupId)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {

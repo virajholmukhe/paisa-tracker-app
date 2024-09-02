@@ -37,7 +37,7 @@ export class GroupExpenseService {
     );
   }
 
-  public removeExpense(expenseGroupId: number):Observable<any>{
+  public removeGroupExpense(expenseGroupId: number):Observable<any>{
     return this.http.delete(this.API_BASE_URL+'/group-expense/delete-Group/'+expenseGroupId, { responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
@@ -47,6 +47,14 @@ export class GroupExpenseService {
 
   addExpense(expense: Expense, groupExpenseId:number): Observable<any> {
     return this.http.post(this.API_BASE_URL+'/group-expense/add-expense/'+groupExpenseId, expense, {responseType: 'text'}).
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  removeExpense(groupExpenseId: number, expenseId: number){
+    return this.http.delete(this.API_BASE_URL+'/group-expense/remove-expense/'+groupExpenseId+'/'+ expenseId, { responseType: "text"}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)
@@ -65,4 +73,5 @@ export class GroupExpenseService {
     }
     return throwError(()=> errMsg);
   }
+
 }

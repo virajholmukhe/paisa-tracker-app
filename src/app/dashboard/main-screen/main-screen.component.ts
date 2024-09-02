@@ -4,7 +4,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { Expense } from '../../models/expense';
 import { initFlowbite } from 'flowbite';
 import ApexCharts from 'apexcharts';
-import { PersonalExpenseServiceService } from '../../services/personal-expense-service.service';
+import { PersonalExpenseService } from '../../services/personal-expense-service.service';
 import { ChartData } from '../../models/chart-data';
 
 @Component({
@@ -24,7 +24,7 @@ export class MainScreenComponent implements OnInit {
   chartData: ChartData = {} as ChartData;
 
   constructor(
-    private personalExpenseService: PersonalExpenseServiceService,
+    private personalExpenseService: PersonalExpenseService,
   ){ }
   
   ngOnInit(): void {

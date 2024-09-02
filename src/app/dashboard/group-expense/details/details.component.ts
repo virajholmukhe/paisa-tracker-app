@@ -20,7 +20,7 @@ export class DetailsComponent implements OnInit{
   
   @Input()
   groupExpense!: GroupExpense;
-
+  expense: Expense = {} as Expense;
   addExpenseForm!: FormGroup;
   groupExpenseForm!: FormGroup;
   errorMessage: string = '';
@@ -28,7 +28,7 @@ export class DetailsComponent implements OnInit{
 
   createExpenseModal!: ModalInterface;
   editGroupExpenseModal!: ModalInterface;
-  // viewModal!: ModalInterface;
+  viewExpenseModal!: ModalInterface;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private groupExpenseService: GroupExpenseService){ }
 
@@ -42,10 +42,6 @@ export class DetailsComponent implements OnInit{
       description:['', [Validators.pattern("^[a-zA-Z\\s]+$")]],
       members: this.formBuilder.array([], [Validators.required])
     });
-    // this.groupExpense.groupMembers.forEach(member => {
-    //   const checkedArray = this.addExpenseForm.get('members') as FormArray;
-    //   checkedArray.push(new FormControl());
-    // });
 
     this.groupExpenseForm = this.formBuilder.group({
       groupName: ['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
@@ -69,15 +65,15 @@ export class DetailsComponent implements OnInit{
     this.createExpenseModal = new Modal($modalElement1, {}, {});
     const $modalElement2: HTMLElement = document.querySelector('#editGroupExpenseModal') as HTMLElement;
     this.editGroupExpenseModal = new Modal($modalElement2, {}, {});
-    // const $modalElement3: HTMLElement = document.querySelector('#viewModal') as HTMLElement;
-    // this.viewModal = new Modal($modalElement3, {}, {});
+    const $modalElement3: HTMLElement = document.querySelector('#viewExpenseModal') as HTMLElement;
+    this.viewExpenseModal = new Modal($modalElement3, {}, {});
   }
 
   addExpense(){
     var expense = {} as Expense;
     expense.paidTo = this.addExpenseForm.get('members')?.value;
     expense.amount = this.addExpenseForm.get('amount')?.value;
-    expense.unsettledAmount = this.addExpenseForm.get('amount')?.value;
+    expense.unsettledAmount = (this.addExpenseForm.get('amount')?.value) / (expense.paidTo.length + 1);
     expense.category = this.addExpenseForm.get('category')?.value;
     expense.description = this.addExpenseForm.get('description')?.value;
     expense.owner = JwtUtils.getUsername() as string;
@@ -89,8 +85,7 @@ export class DetailsComponent implements OnInit{
       },
       error: err => this.errorMessage = err,
       complete: () => {
-        this.getGroupExpense(),
-        this.addExpenseForm.get('');
+        this.getGroupExpense()
       }
     });
     this.createExpenseModal.hide();
@@ -104,6 +99,24 @@ export class DetailsComponent implements OnInit{
     });
   }
 
+  viewExpenseDetails(expense: Expense){
+    this.loadExpense(expense);
+    this.viewExpenseModal.show();
+  }
+
+  loadExpense(expense: Expense){
+    this.expense = expense;
+  }
+
+  removeExpense(expenseId: number){
+    this.groupExpenseService.removeExpense(Number(this.groupExpense.groupId), expenseId).subscribe({
+      next: res => console.log(res),
+      error: err => this.errorMessage = err,
+      complete: () => {
+        this.getGroupExpense();
+      }
+    });
+  }
 
   onChangeCheckBox(event: any){
     const checkedValue = event.target.value;
@@ -149,6 +162,10 @@ export class DetailsComponent implements OnInit{
       case "editGroupExpenseModal": { 
         this.editGroupExpenseModal.hide();
         break; 
+      } 
+      case "viewExpenseModal": { 
+        this.viewExpenseModal.hide();
+        break; 
       }
     }
   }
@@ -161,6 +178,10 @@ export class DetailsComponent implements OnInit{
       } 
       case "editGroupExpenseModal": { 
         this.editGroupExpenseModal.show();
+        break; 
+      }
+      case "viewExpenseModal": { 
+        this.viewExpenseModal.show();
         break; 
       }
     }

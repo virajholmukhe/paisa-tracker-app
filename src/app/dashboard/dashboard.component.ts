@@ -8,7 +8,7 @@ import { initFlowbite, initModals } from 'flowbite';
 import { EmiExpenseComponent } from "./emi-expense/emi-expense.component";
 import { FlowbiteService } from '../services/flowbite.service';
 import { Expense } from '../models/expense';
-import { PersonalExpenseServiceService } from '../services/personal-expense-service.service';
+import { PersonalExpenseService } from '../services/personal-expense-service.service';
 import { CommonModule } from '@angular/common';
 import { MainScreenComponent } from "./main-screen/main-screen.component";
 import { LoanExpense } from '../models/loan-expense';
@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private router:Router,
-    private personalExpenseService: PersonalExpenseServiceService
+    private personalExpenseService: PersonalExpenseService
   ) {}
 
   ngOnInit(): void {

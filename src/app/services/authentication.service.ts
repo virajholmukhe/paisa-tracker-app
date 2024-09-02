@@ -35,6 +35,13 @@ export class AuthenticationService {
     )
   }
 
+  validateUsername(username: string): Observable<any>{
+    return this.http.get(this.API_BASE_URL + '/validate-username/'+username)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
   private handleError(err: HttpErrorResponse): Observable<any>{
     let errMsg = '';
     if(err.error instanceof Error){
