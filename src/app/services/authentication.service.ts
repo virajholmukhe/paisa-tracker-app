@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AuthenticationRequest } from '../models/authentication-request';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { RegistrationRequest } from '../models/registration-request';
+import { JwtUtils } from '../utils/jwtUtils';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,10 @@ import { RegistrationRequest } from '../models/registration-request';
 export class AuthenticationService {
   API_BASE_URL: string = 'http://localhost:8000';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router  
+  ) { }
 
   authenticate(body: AuthenticationRequest): Observable<any> {
     return this.http.post(this.API_BASE_URL+'/auth/authenticate', body)
@@ -26,6 +31,25 @@ export class AuthenticationService {
       // tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+    if (!token) {
+      return false;
+    }
+
+    // Check if token is expired
+    const isExpired = JwtUtils.isTokenExpired();
+    if (isExpired) {
+      return false;
+    }
+    return true;
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/signin']);
   }
 
   isTokenValid(username: string): Observable<any>{

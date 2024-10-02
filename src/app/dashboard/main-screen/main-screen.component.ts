@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Expense } from '../../models/expense';
 import { initFlowbite } from 'flowbite';
 import ApexCharts from 'apexcharts';
 import { PersonalExpenseService } from '../../services/personal-expense-service.service';
 import { ChartData } from '../../models/chart-data';
+import { PersonalExpense } from '../../models/personal-expense';
+
 
 @Component({
   selector: 'app-main-screen',
@@ -16,7 +17,7 @@ import { ChartData } from '../../models/chart-data';
 })
 export class MainScreenComponent implements OnInit {
   
-  expenseList: Array<Expense> = {} as Array<Expense>;
+  expenseList: Array<PersonalExpense> = {} as Array<PersonalExpense>;
 
   expenseChart!: ApexCharts;
   categoryCharts!: ApexCharts;
@@ -25,6 +26,7 @@ export class MainScreenComponent implements OnInit {
 
   constructor(
     private personalExpenseService: PersonalExpenseService,
+
   ){ }
   
   ngOnInit(): void {

@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { Modal } from 'flowbite';
 import type { ModalInterface } from 'flowbite';
+import { PersonalExpense } from '../../models/personal-expense';
 
 @Component({
   selector: 'app-personal-expense',
@@ -24,8 +25,8 @@ export class PersonalExpenseComponent implements OnInit{
   editExpenseForm!: FormGroup;
   expenseForm!: FormGroup;
 
-  expenseList: Array<Expense> = {} as Array<Expense>;
-  expense: Expense = {} as Expense;
+  expenseList: Array<PersonalExpense> = {} as Array<PersonalExpense>;
+  expense: PersonalExpense = {} as PersonalExpense;
   expenseId: number = 0;
   errorMessage: string = '';
 
@@ -70,22 +71,20 @@ export class PersonalExpenseComponent implements OnInit{
   }
   
   addExpense(){
-    var expense = {} as Expense;
-    expense.paidTo = [];
-    expense.paidTo.push(this.addExpenseForm.get('name')?.value);
+    var expense = {} as PersonalExpense;
     expense.amount = this.addExpenseForm.get('amount')?.value;
     expense.unsettledAmount = this.addExpenseForm.get('amount')?.value;
     expense.category = this.addExpenseForm.get('category')?.value;
     expense.description = this.addExpenseForm.get('description')?.value;
     expense.owner = JwtUtils.getUsername() as string;
     if(expense.category == 'Borrow'){
-      expense.paidBy = expense.paidTo[0];
-      expense.paidTo = [JwtUtils.getUsername() as string];
+      expense.paidBy = this.addExpenseForm.get('name')?.value;
+      expense.paidTo = JwtUtils.getUsername() as string;
     }else {
       expense.paidBy = JwtUtils.getUsername() as string;
+      expense.paidTo = this.addExpenseForm.get('name')?.value;
     }
     let usernameIsAvailable = false;
-    this.personalExpenseService
     this.personalExpenseService.addExpense(expense).subscribe({
       next: expense => {
         this.expense = expense;
@@ -99,7 +98,7 @@ export class PersonalExpenseComponent implements OnInit{
     })
   }
 
-  viewExpense(expense: Expense){
+  viewExpense(expense: PersonalExpense){
     this.expense = expense;
     this.viewModal.show();
   }
@@ -133,9 +132,9 @@ export class PersonalExpenseComponent implements OnInit{
     this.deleteModal.hide();
   }
   
-  settleUpExpense(expense: Expense){
+  settleUpExpense(expense: PersonalExpense){
     if(expense.paidTo?.length){
-      this.editExpenseForm.controls['name'].setValue(expense.paidTo[0]);
+      this.editExpenseForm.controls['name'].setValue(expense.paidTo);
       this.editExpenseForm.controls['expenseId'].setValue(expense.id);
       this.editExpenseForm.controls['totalAmount'].setValue(expense.amount);
       this.editExpenseForm.controls['unsettledAmount'].setValue(expense.unsettledAmount);

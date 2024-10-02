@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GroupExpense } from '../models/group-expense';
+import { Group } from '../models/group-expense';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Expense } from '../models/expense';
 
@@ -13,7 +13,7 @@ export class GroupExpenseService {
 
   constructor(private http: HttpClient) { }
 
-  public createGroupExpense(groupExpense: GroupExpense): Observable<any> {
+  public createGroupExpense(groupExpense: Group): Observable<any> {
     return this.http.post(this.API_BASE_URL+'/group-expense/add-group', groupExpense, {responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
@@ -22,15 +22,15 @@ export class GroupExpenseService {
   }
 
   public getGroupExpenses(): Observable<any> {
-    return this.http.get<GroupExpense[]>(this.API_BASE_URL+'/group-expense/get-all-groups').
+    return this.http.get<Group[]>(this.API_BASE_URL+'/group-expense/get-all-groups').
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
   }
 
-  public getGroupExpense(groupExpenseId: number): Observable<GroupExpense> {
-    return this.http.get<GroupExpense>(this.API_BASE_URL+'/group-expense/get-groupExpense/'+groupExpenseId).
+  public getGroupExpense(groupExpenseId: number): Observable<Group> {
+    return this.http.get<Group>(this.API_BASE_URL+'/group-expense/get-groupExpense/'+groupExpenseId).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)

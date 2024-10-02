@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Expense } from '../models/expense';
 import { Observable, catchError, tap, throwError } from 'rxjs';
+import { PersonalExpense } from '../models/personal-expense';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class PersonalExpenseService {
 
   constructor(private http: HttpClient) { }
 
-  addExpense(expense: Expense): Observable<any> {
+  addExpense(expense: PersonalExpense): Observable<any> {
     return this.http.post(this.API_BASE_URL+'/expense/add-expense', expense, {responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
@@ -20,8 +21,8 @@ export class PersonalExpenseService {
     );
   }
 
-  getExpenseList():Observable<Expense[]>{
-    return this.http.get<Expense[]>(this.API_BASE_URL+'/expense/get-all-expenses')
+  getExpenseList():Observable<PersonalExpense[]>{
+    return this.http.get<PersonalExpense[]>(this.API_BASE_URL+'/expense/get-all-expenses')
     .pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)

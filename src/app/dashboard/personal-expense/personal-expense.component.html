@@ -66,13 +66,6 @@
                   <button *ngIf="(expense.unsettledAmount > 0);else settled" (click)="settleUpExpense(expense)" class="w-full bg-green-500 hover:bg-green-400 text-white font-bold py-1 px-4 border-b-4 border-green-700 hover:border-green-500">
                     Settle-up
                   </button>
-                  <!-- <ng-container *ngIf="">
-                    <ng-template #settled >
-                      <button class="w-full cursor-default bg-red-500 text-white font-bold py-1 px-4 border-b-4 border-red-700">
-                        Settled
-                      </button>
-                    </ng-template>
-                  </ng-container> -->
                   <ng-template #settled >
                     <button class="w-full cursor-default bg-red-500 text-white font-bold py-1 px-4 border-b-4 border-red-700">
                       Settled
@@ -84,13 +77,6 @@
                     <button *ngIf="(expense.unsettledAmount > 0);else settled" (click)="settleUpExpense(expense)" class="w-full bg-green-500 hover:bg-green-400 text-white font-bold py-1 px-4 border-b-4 border-green-700 hover:border-green-500">
                       Settle-up
                     </button>
-                    <!-- <ng-container *ngIf="">
-                      <ng-template #settled >
-                        <button class="w-full cursor-default bg-red-500 text-white font-bold py-1 px-4 border-b-4 border-red-700">
-                          Settled
-                        </button>
-                      </ng-template>
-                    </ng-container> -->
                     <ng-template #settled >
                       <button class="w-full cursor-default bg-red-500 text-white font-bold py-1 px-4 border-b-4 border-red-700">
                         Settled

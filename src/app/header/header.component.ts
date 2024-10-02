@@ -24,18 +24,18 @@ export class HeaderComponent implements OnInit{
     
   }
 
- ngOnInit(): void {
-  //  initFlowbite();
-   if(this.tokenService.token){
-     this.isLoggedIn = true;
-     this.username = JwtUtils.getUsername();
-   }
- }
+  ngOnInit(): void {
+    //  initFlowbite();
+    if(this.tokenService.token){
+      this.isLoggedIn = true;
+      this.username = JwtUtils.getUsername();
+    }
+  }
 
- signOut(){
-   this.tokenService.clearToken();
-   this.isLoggedIn = false;
-   this.router.navigate(['/signin']);
- }
+  signOut(){
+    this.tokenService.clearToken();
+    this.isLoggedIn = false;
+    this.router.navigate(['/signin']);
+  }
 
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GroupExpense } from '../../../models/group-expense';
+import { Group } from '../../../models/group-expense';
 import { initFlowbite, Modal, ModalInterface } from 'flowbite';
 import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ import { GroupExpenseService } from '../../../services/group-expense.service';
 export class DetailsComponent implements OnInit{
   
   @Input()
-  groupExpense!: GroupExpense;
+  groupExpense!: Group;
   expense: Expense = {} as Expense;
   addExpenseForm!: FormGroup;
   groupExpenseForm!: FormGroup;
@@ -59,7 +59,7 @@ export class DetailsComponent implements OnInit{
       totalOutstanding: ['']
     });
 
-    this.groupMembersList = this.groupExpense.groupMembers;
+    this.groupMembersList = this.groupExpense.members;
 
     const $modalElement1: HTMLElement = document.querySelector('#createExpenseModal') as HTMLElement;
     this.createExpenseModal = new Modal($modalElement1, {}, {});
@@ -79,7 +79,7 @@ export class DetailsComponent implements OnInit{
     expense.owner = JwtUtils.getUsername() as string;
     expense.paidBy = JwtUtils.getUsername() as string;
     
-    this.groupExpenseService.addExpense(expense, this.groupExpense.groupId).subscribe({
+    this.groupExpenseService.addExpense(expense, this.groupExpense.id).subscribe({
       next: res => {
         console.log(res);
       },
@@ -92,7 +92,7 @@ export class DetailsComponent implements OnInit{
   }
 
   getGroupExpense(){
-    this.groupExpenseService.getGroupExpense(this.groupExpense.groupId).subscribe({
+    this.groupExpenseService.getGroupExpense(this.groupExpense.id).subscribe({
       next: res => this.groupExpense = res,
       error: err => this.errorMessage = err,
       complete: () => console.log("groupExpense updated")
@@ -109,7 +109,7 @@ export class DetailsComponent implements OnInit{
   }
 
   removeExpense(expenseId: number){
-    this.groupExpenseService.removeExpense(Number(this.groupExpense.groupId), expenseId).subscribe({
+    this.groupExpenseService.removeExpense(Number(this.groupExpense.id), expenseId).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {

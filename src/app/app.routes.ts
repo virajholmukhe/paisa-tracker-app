@@ -7,16 +7,17 @@ import { ProfileComponent } from './profile/profile.component';
 import { EmiExpenseComponent } from './dashboard/emi-expense/emi-expense.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MainScreenComponent } from './dashboard/main-screen/main-screen.component';
+import { AuthGuard } from './services/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
 
-    { path: 'dashboard', component: MainScreenComponent },
-    { path: 'account', component: PersonalExpenseComponent },
-    { path: 'groups', component: GroupExpenseComponent },
-    { path: 'emis', component: EmiExpenseComponent },
-    { path: 'profile' , component: ProfileComponent },
+    { path: 'dashboard', component: MainScreenComponent, canActivate: [AuthGuard] },
+    { path: 'account', component: PersonalExpenseComponent, canActivate: [AuthGuard] },
+    { path: 'groups', component: GroupExpenseComponent, canActivate: [AuthGuard] },
+    { path: 'emis', component: EmiExpenseComponent, canActivate: [AuthGuard] },
+    { path: 'profile' , component: ProfileComponent, canActivate: [AuthGuard] },
 
     { path: 'register' , component: SessionComponent, data: {showRegister: true} },
     { path: 'signin' , component: SessionComponent, data: {showRegister: false} },

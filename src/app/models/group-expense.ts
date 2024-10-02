@@ -1,15 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Expense } from './expense';
-export interface GroupExpense {
+export interface Group {
   expenseDTO: Array<Expense>;
-  groupId: number;
+  id: number;
   expenseId: Array<number>;
-  groupAdmin: string;
-  groupCreated: string;
-  groupMembers: Array<string>;
-  groupName: string;
-  totalAmount: number;
-  totalUnpaidAmount: number;
+  admin: string;
+  createdOn: string;
+  members: Array<string>;
+  name: string;
+  amount: number;
+  unsettledAmount: number;
   
 }

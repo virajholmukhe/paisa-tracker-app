@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { HeaderComponent } from "../header/header.component";
 import { TokenService } from '../services/token.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JwtUtils } from '../utils/jwtUtils';
 import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [HeaderComponent, FooterComponent, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

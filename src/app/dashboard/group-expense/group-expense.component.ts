@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { initFlowbite, Modal, ModalInterface } from 'flowbite';
-import { GroupExpense } from '../../models/group-expense';
+import { Group } from '../../models/group-expense';
 import { GroupExpenseService } from '../../services/group-expense.service';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DetailsComponent } from "./details/details.component";
 import { Expense } from '../../models/expense';
+import { JwtUtils } from '../../utils/jwtUtils';
 
 @Component({
   selector: 'app-group-expense',
@@ -21,8 +22,8 @@ export class GroupExpenseComponent implements OnInit{
   groupMembersList!: Array<string>;
   groupExpenseForm!: FormGroup;
   errorMessage!: string;
-  groupExpensesList: Array<GroupExpense> = new Array<GroupExpense>;
-  groupExpense: GroupExpense = {} as GroupExpense;
+  groupExpensesList: Array<Group> = new Array<Group>;
+  groupExpense: Group = {} as Group;
   expenseGroupId: number = 0;
 
   addGroupExpenseModal!: ModalInterface;
@@ -61,9 +62,10 @@ export class GroupExpenseComponent implements OnInit{
   }
 
   createGroup(){
-    var groupExpense = {} as GroupExpense;
-    groupExpense.groupName = this.groupExpenseForm.get('groupName')?.value;
-    groupExpense.groupMembers = this.groupMembersList;
+    var groupExpense = {} as Group;
+    groupExpense.name = this.groupExpenseForm.get('groupName')?.value;
+    groupExpense.members = this.groupMembersList;
+    groupExpense.members.push(JwtUtils.getUsername() as string);
     this.groupExpenseService.createGroupExpense(groupExpense).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
@@ -76,7 +78,7 @@ export class GroupExpenseComponent implements OnInit{
     this.addGroupExpenseModal.hide();
   }
 
-  loadGroupExpense(groupExpense: GroupExpense){
+  loadGroupExpense(groupExpense: Group){
     this.groupExpense = groupExpense;
   }
   
@@ -105,13 +107,13 @@ export class GroupExpenseComponent implements OnInit{
     });
   }
 
-  removeGroup(groupExpense: GroupExpense){
+  removeGroup(groupExpense: Group){
     this.loadGroupExpense(groupExpense);
     this.deleteGroupModal.show();
   }
  
   deleteGroup(){
-    this.groupExpenseService.removeGroupExpense(Number(this.groupExpense.groupId)).subscribe({
+    this.groupExpenseService.removeGroupExpense(Number(this.groupExpense.id)).subscribe({
       next: res => console.log(res),
       error: err => this.errorMessage = err,
       complete: () => {
