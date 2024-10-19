@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Group } from '../../../models/group-expense';
+import { Group } from '../../../models/group';
 import { initFlowbite, Modal, ModalInterface } from 'flowbite';
 import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtUtils } from '../../../utils/jwtUtils';
-import { Expense } from '../../../models/expense';
+import { GroupExpense } from '../../../models/group-expense';
 import { GroupExpenseService } from '../../../services/group-expense.service';
 
 @Component({
@@ -20,21 +20,21 @@ export class DetailsComponent implements OnInit{
   
   @Input()
   groupExpense!: Group;
-  expense: Expense = {} as Expense;
+  expense: GroupExpense = {} as GroupExpense;
   addExpenseForm!: FormGroup;
   groupExpenseForm!: FormGroup;
   errorMessage: string = '';
   groupMembersList!: Array<string>;
+  username: string = '';
 
   createExpenseModal!: ModalInterface;
-  editGroupExpenseModal!: ModalInterface;
   viewExpenseModal!: ModalInterface;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private groupExpenseService: GroupExpenseService){ }
 
   ngOnInit(): void {
     initFlowbite();
-
+    this.username = JwtUtils.getUsername() as string;
     this.addExpenseForm = this.formBuilder.group({
       name:['', [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]],
       amount: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
@@ -63,21 +63,20 @@ export class DetailsComponent implements OnInit{
 
     const $modalElement1: HTMLElement = document.querySelector('#createExpenseModal') as HTMLElement;
     this.createExpenseModal = new Modal($modalElement1, {}, {});
-    const $modalElement2: HTMLElement = document.querySelector('#editGroupExpenseModal') as HTMLElement;
-    this.editGroupExpenseModal = new Modal($modalElement2, {}, {});
     const $modalElement3: HTMLElement = document.querySelector('#viewExpenseModal') as HTMLElement;
     this.viewExpenseModal = new Modal($modalElement3, {}, {});
   }
 
   addExpense(){
-    var expense = {} as Expense;
+    var expense = {} as GroupExpense;
     expense.paidTo = this.addExpenseForm.get('members')?.value;
+    expense.paidTo.push(this.username);
     expense.amount = this.addExpenseForm.get('amount')?.value;
     expense.unsettledAmount = (this.addExpenseForm.get('amount')?.value) / (expense.paidTo.length + 1);
     expense.category = this.addExpenseForm.get('category')?.value;
     expense.description = this.addExpenseForm.get('description')?.value;
-    expense.owner = JwtUtils.getUsername() as string;
-    expense.paidBy = JwtUtils.getUsername() as string;
+    expense.owner = this.username;
+    expense.paidBy = this.username;
     
     this.groupExpenseService.addExpense(expense, this.groupExpense.id).subscribe({
       next: res => {
@@ -92,19 +91,19 @@ export class DetailsComponent implements OnInit{
   }
 
   getGroupExpense(){
-    this.groupExpenseService.getGroupExpense(this.groupExpense.id).subscribe({
+    this.groupExpenseService.getGroup(this.groupExpense.id).subscribe({
       next: res => this.groupExpense = res,
       error: err => this.errorMessage = err,
       complete: () => console.log("groupExpense updated")
     });
   }
 
-  viewExpenseDetails(expense: Expense){
+  viewExpenseDetails(expense: GroupExpense){
     this.loadExpense(expense);
     this.viewExpenseModal.show();
   }
 
-  loadExpense(expense: Expense){
+  loadExpense(expense: GroupExpense){
     this.expense = expense;
   }
 
@@ -135,34 +134,12 @@ export class DetailsComponent implements OnInit{
     }
   }
 
-  addMemberToList(name: string){
-    
-    if(name.length > 0){
-      this.groupMembersList.push(name);
-    }
-  }
-  
-  removeMemberFromList(name: string){
-    const index: number = this.groupMembersList.indexOf(name);
-    if(index !== -1) {
-      this.groupMembersList.splice(index, 1);
-    }
-  }
-  
-  updateGroupExpense(){
-    
-  }
-
   hideModal(modalId: string){
     switch(modalId) { 
       case "createExpenseModal": { 
         this.createExpenseModal.hide();
          break; 
-      } 
-      case "editGroupExpenseModal": { 
-        this.editGroupExpenseModal.hide();
-        break; 
-      } 
+      }
       case "viewExpenseModal": { 
         this.viewExpenseModal.hide();
         break; 
@@ -174,10 +151,6 @@ export class DetailsComponent implements OnInit{
     switch(modalId) { 
       case "createExpenseModal": { 
         this.createExpenseModal.show();
-        break; 
-      } 
-      case "editGroupExpenseModal": { 
-        this.editGroupExpenseModal.show();
         break; 
       }
       case "viewExpenseModal": { 

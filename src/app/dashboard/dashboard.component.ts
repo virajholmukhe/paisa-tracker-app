@@ -7,13 +7,14 @@ import { JwtUtils } from '../utils/jwtUtils';
 import { initFlowbite, initModals } from 'flowbite';
 import { EmiExpenseComponent } from "./emi-expense/emi-expense.component";
 import { FlowbiteService } from '../services/flowbite.service';
-import { Expense } from '../models/expense';
+import { GroupExpense } from '../models/group-expense';
 import { PersonalExpenseService } from '../services/personal-expense-service.service';
 import { CommonModule } from '@angular/common';
 import { MainScreenComponent } from "./main-screen/main-screen.component";
 import { LoanExpense } from '../models/loan-expense';
 import { ProfileComponent } from "../profile/profile.component";
 import { FooterComponent } from "../footer/footer.component";
+import { PersonalExpense } from '../models/personal-expense';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +28,7 @@ export class DashboardComponent implements OnInit {
   isLoggedIn = false;
   username!: string;
   isTokenValid = false;
-  expenseList: Array<Expense> = new Array<Expense>();
+  expenseList: Array<PersonalExpense> = new Array<PersonalExpense>();
   loanExpenseList: Array<LoanExpense> = new Array<LoanExpense>();
   errorMessage: string = '';
   

@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Group } from '../models/group-expense';
+import { Group } from '../models/group';
 import { Observable, catchError, tap, throwError } from 'rxjs';
-import { Expense } from '../models/expense';
+import { GroupExpense } from '../models/group-expense';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +13,7 @@ export class GroupExpenseService {
 
   constructor(private http: HttpClient) { }
 
-  public createGroupExpense(groupExpense: Group): Observable<any> {
-    return this.http.post(this.API_BASE_URL+'/group-expense/add-group', groupExpense, {responseType: 'text'}).
-    pipe(
-      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
-      catchError(this.handleError)
-    );
-  }
-
-  public getGroupExpenses(): Observable<any> {
+  public getGroupList(): Observable<any> {
     return this.http.get<Group[]>(this.API_BASE_URL+'/group-expense/get-all-groups').
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
@@ -29,23 +21,39 @@ export class GroupExpenseService {
     );
   }
 
-  public getGroupExpense(groupExpenseId: number): Observable<Group> {
-    return this.http.get<Group>(this.API_BASE_URL+'/group-expense/get-groupExpense/'+groupExpenseId).
+  public createGroup(group: Group): Observable<any> {
+    return this.http.post(this.API_BASE_URL+'/group-expense/add-group', group, {responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
   }
 
-  public removeGroupExpense(expenseGroupId: number):Observable<any>{
-    return this.http.delete(this.API_BASE_URL+'/group-expense/delete-Group/'+expenseGroupId, { responseType: 'text'}).
+  public getGroup(groupId: number): Observable<Group> {
+    return this.http.get<Group>(this.API_BASE_URL+'/group-expense/get-groupExpense/'+groupId).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
   }
 
-  addExpense(expense: Expense, groupExpenseId:number): Observable<any> {
+  public editGroup(group: Group): Observable<any> {
+    return this.http.put<Group>(this.API_BASE_URL+'/group-expense/edit-group', group).
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  public removeGroup(groupId: number):Observable<any>{
+    return this.http.delete(this.API_BASE_URL+'/group-expense/delete-Group/'+groupId, { responseType: 'text'}).
+    pipe(
+      tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
+
+  addExpense(expense: GroupExpense, groupExpenseId:number): Observable<any> {
     return this.http.post(this.API_BASE_URL+'/group-expense/add-expense/'+groupExpenseId, expense, {responseType: 'text'}).
     pipe(
       tap((data)=> console.log('Data Fetched: ' + JSON.stringify(data))),

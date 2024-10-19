@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Expense } from '../models/expense';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { PersonalExpense } from '../models/personal-expense';
 

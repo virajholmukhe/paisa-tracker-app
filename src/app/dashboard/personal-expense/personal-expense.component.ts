@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { initFlowbite } from 'flowbite';
-import { Expense } from '../../models/expense';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { PersonalExpenseService } from '../../services/personal-expense-service.service';
 import { JwtUtils } from '../../utils/jwtUtils';
